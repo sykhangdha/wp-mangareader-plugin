@@ -4,60 +4,70 @@ jQuery(document).ready(function($) {
     var mangaPagination = mangaReader.find('.manga-pagination');
     var currentIndex = 0;
     var totalPages = mangaImages.length;
+    var pagedViewEnabled = true;
 
-    // Paged View
     var pagedView = function() {
         var currentImage = $(mangaImages[currentIndex]);
         currentImage.show().siblings().hide();
         mangaPagination.text((currentIndex + 1) + '/' + totalPages);
     }
 
-    // List View
     var listView = function() {
         mangaImages.show();
         mangaPagination.empty();
     }
 
-    // Default View
     pagedView();
 
-    // Switch View
     $('.manga-reader-view button').click(function() {
         $(this).addClass('active').siblings().removeClass('active');
         if ($(this).hasClass('paged-view')) {
             $(document).off('keydown');
+            pagedViewEnabled = true;
             pagedView();
         } else {
             listView();
+            pagedViewEnabled = false;
         }
     });
 
-    // Arrow Key Navigation
     $(document).keydown(function(e) {
-        if (mangaReader.is(':visible') && e.keyCode === 39) { // Right Arrow
+        if (pagedViewEnabled && mangaReader.is(':visible') && e.keyCode === 39) { // Right Arrow
             if (currentIndex === totalPages - 1) {
                 alert('Last page reached');
-                return;
+            } else {
+                currentIndex++;
+                pagedView();
             }
-            currentIndex++;
-            pagedView();
-        } else if (mangaReader.is(':visible') && e.keyCode === 37) { // Left Arrow
+        } else if (pagedViewEnabled && mangaReader.is(':visible') && e.keyCode === 37) { // Left Arrow
             if (currentIndex === 0) {
                 alert('First page reached');
-                return;
+            } else {
+                currentIndex--;
+                pagedView();
             }
-            currentIndex--;
-            pagedView();
         }
     });
 
-    // Image Navigation
     mangaImages.click(function() {
-        if (currentIndex === totalPages - 1) {
-            alert('Last page reached');
-            return;
+        if (!pagedViewEnabled) {
+            var currentImage = $(this);
+            var nextImage = currentImage.next('img');
+            if (nextImage.length) {
+                var top = nextImage.offset().top;
+                $('html, body').animate({
+                    scrollTop: top
+                }, 500);
+            } else {
+                alert('Last image reached');
+            }
+        } else {
+            if ($(this).index() === totalPages - 1) {
+                alert('Last page reached');
+            } else {
+                currentIndex++;
+                pagedView();
+            }
         }
-        currentIndex++;
-        pagedView();
     });
 });
