@@ -1,10 +1,10 @@
 <?php
 /**
  * Plugin Name: Manga Reader
- * Description: A super basic manga reader plugin that works with almost any wordpress theme
- * Version: BETA
+ * Description: A manga reader plugin.
+ * Version: 1.0
  * Author: Ha Sky
- * Author URI: https://hasky.rf.gd/read
+ * Author URI: https://hasky.rf.gd
  **/
 
 function manga_reader_shortcode($atts) {
@@ -30,10 +30,18 @@ function manga_reader_shortcode($atts) {
     $output .= '</div>';
     $output .= '</div>';
 
-    // Load scripts
-    wp_enqueue_script('jquery');
-    wp_enqueue_script('manga-reader-script', plugins_url('manga-reader.js', __FILE__), array('jquery'), '1.0', true);
-
     return $output;
 }
-add_shortcode('manga_reader', 'manga_reader_shortcode');
+
+// Load scripts
+function manga_reader_scripts() {
+    wp_enqueue_script('jquery');
+    wp_enqueue_script('manga-reader-script', plugins_url('manga-reader.js', __FILE__), array('jquery'), '1.0', true);
+}
+add_action('wp_enqueue_scripts', 'manga_reader_scripts');
+
+// Register shortcode
+function manga_reader_register_shortcode() {
+    add_shortcode('manga_reader', 'manga_reader_shortcode');
+}
+add_action('init', 'manga_reader_register_shortcode');
