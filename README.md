@@ -5,3 +5,5 @@ not yet completed: if you want to test out the plugin a zip file is provided as 
 shortcode example: [manga_reader images="image1.jpg, image2.jpg, image3.jpg"]
 
 Will add an option for a custom_field later that will insert the image links automatically into the shortcode format
+
+example of plugin(if maintenance mode is on then the script is being updated. https://hasky.rf.gd/read/hello-world/)
