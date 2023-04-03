@@ -10,11 +10,6 @@ jQuery(document).ready(function($) {
         var currentImage = $(mangaImages[currentIndex]);
         currentImage.show().siblings().hide();
         mangaPagination.text((currentIndex + 1) + '/' + totalPages);
-        // NEW: Disable clicking until arrow keys are used
-        currentImage.one('click', function() {
-            $(document).off('keydown');
-            pagedView();
-        });
     }
 
     // List View
@@ -40,18 +35,29 @@ jQuery(document).ready(function($) {
     // Arrow Key Navigation
     $(document).keydown(function(e) {
         if (mangaReader.is(':visible') && e.keyCode === 39) { // Right Arrow
-            currentIndex = currentIndex === totalPages - 1 ? 0 : currentIndex + 1;
-            pagedView();
             if (currentIndex === totalPages - 1) {
                 alert('Last page reached');
+                return;
             }
+            currentIndex++;
+            pagedView();
         } else if (mangaReader.is(':visible') && e.keyCode === 37) { // Left Arrow
             if (currentIndex === 0) {
                 alert('First page reached');
-            } else {
-                currentIndex = currentIndex === 0 ? 0 : currentIndex - 1;
-                pagedView();
+                return;
             }
+            currentIndex--;
+            pagedView();
         }
+    });
+
+    // Image Navigation
+    mangaImages.click(function() {
+        if (currentIndex === totalPages - 1) {
+            alert('Last page reached');
+            return;
+        }
+        currentIndex++;
+        pagedView();
     });
 });
