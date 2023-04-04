@@ -62,12 +62,23 @@ jQuery(document).ready(function($) {
                 alert('Last image reached');
             }
         } else {
-            if ($(this).index() === totalPages - 1) {
+            if (currentIndex === totalPages - 1) {
                 alert('Last page reached');
             } else {
                 currentIndex++;
                 pagedView();
+                if (currentIndex === totalPages - 1) {
+                    $(document).off('keydown');
+                }
             }
         }
     });
 });
+// new
+$(window).on('load', function() {
+    var mangaImages = $('.manga-images img');
+    mangaImages.on('load', function() {
+        $(this).removeClass('img-loading');
+    });
+});
+// end new
