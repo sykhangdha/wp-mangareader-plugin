@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Manga Reader
  * Description: A manga reader plugin.
- * Version: 1.0
+ * Version: 1.1
  * Author: Ha Sky
  * Author URI: https://hasky.rf.gd
  **/
@@ -15,23 +15,17 @@ function manga_reader_shortcode($atts) {
 
     global $post;
 
-    // Check if images were provided as shortcode attribute, if not, search post content for image links
-    if (empty($images)) {
-        $images = array();
-        preg_match_all('/<img[^>]+data-src=["\']([^"\']+)["\'][^>]*>/', $post->post_content, $matches);
-        if (!empty($matches[1])) {
-            $images = $matches[1];
-        }
-        else {
-            preg_match_all('/<img[^>]+src=["\']([^"\']+)["\'][^>]*>/', $post->post_content, $matches);
-            if (!empty($matches[1])) {
-                $images = $matches[1];
-            }
-        }
-    } else {
-        // Convert image links to array
-        $images = preg_split('/\s*(?:,|$)\s*/', $images);
-    }
+// Check if images were provided as shortcode attribute, if not, get image links from custom field
+if (empty($images)) {
+    $images = get_post_meta(get_the_ID(), 'image_links', true);
+    // Convert image links to array
+    $images = preg_split('/\r\n|[\r\n]/', $images);
+    $images = array_map('trim', $images);
+    $images = array_filter($images);
+} else {
+    // Convert image links to array
+    $images = preg_split('/\s*(?:,|$)\s*/', $images);
+}
 
     // Output HTML markup
     $output = '<div class="manga-reader">';
