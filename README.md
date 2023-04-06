@@ -9,8 +9,6 @@ Example of that shortcode:
 [<img src="http://i.epvpimg.com/qle7aab.png">]
 
 
-you would add the image links into the "src=" 
-
 # Functions
   -Select between Paged/List View
       -The reader will remember the last selected option
