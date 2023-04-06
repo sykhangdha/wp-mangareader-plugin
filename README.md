@@ -1,5 +1,6 @@
 # wp-mangareader-plugin
-a super simple manga reader that works with most wordpress themes using jQuery(js). 
+a super simple manga reader that works with most wordpress themes using jQuery(js).
+Check it out here: https://hasky.rf.gd/read/
 
 # ShortCode
 shortcode example: [manga_reader images="image1.jpg, image2.jpg, image3.jpg"] OR you can also use [manga_reader]  [/manga_reader]
@@ -19,3 +20,6 @@ Example of that shortcode:
   * Lightweight
       * No unnecssary functions, just switching between views and navigation functions.
       
+     
+     
+
