@@ -5,7 +5,7 @@ Check it out here: https://hasky.rf.gd/read/
 # ShortCode
 The reader, when activated, will add a custom_field named "image_links". Add image links(one image link per line) and the reader will detect all images inside the field.
 [<img src="http://i.epvpimg.com/t1RIcab.png">]
-
+Note: if you want an option to use upload images from a wordpress gallery you can modify the manga-reader.php and manga-reader.js files to do this. Since the site uses external hosts to grab image links this function is not included in this reader plugin. But you are free to modify this plugin however you want!
 
 # Functions
   * Select between Paged/List View
