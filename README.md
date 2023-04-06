@@ -19,7 +19,8 @@ Example of that shortcode:
       * You may need to add some .css changes to your theme to get it to work properly!
   * Lightweight
       * No unnecssary functions, just switching between views and navigation functions.
-      
+  *What's being worked on still?
+      * Currently being worked on: A custom field to insert multiple image links and it will automatically insert the shortcode and links into the correct format.
      
      
 
