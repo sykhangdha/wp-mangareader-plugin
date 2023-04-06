@@ -4,53 +4,65 @@ jQuery(document).ready(function($) {
     var mangaPagination = mangaReader.find('.manga-pagination');
     var currentIndex = 0;
     var totalPages = mangaImages.length;
-    var pagedViewEnabled = true;
+    var listViewFlag = false;
 
     var pagedView = function() {
         var currentImage = $(mangaImages[currentIndex]);
         currentImage.show().siblings().hide();
         mangaPagination.text((currentIndex + 1) + '/' + totalPages);
+        $(document).off('keydown').on('keydown', function(e) {
+            if (e.keyCode === 39) { // Right Arrow
+                if (currentIndex === totalPages - 1) {
+                    alert('Last page reached');
+                } else {
+                    currentIndex++;
+                    pagedView();
+                }
+            } else if (e.keyCode === 37) { // Left Arrow
+                if (currentIndex === 0) {
+                    alert('First page reached');
+                } else {
+                    currentIndex--;
+                    pagedView();
+                }
+            }
+        });
     }
 
     var listView = function() {
         mangaImages.show();
         mangaPagination.empty();
+        $(document).off('keydown');
     }
 
-    pagedView();
+    // Retrieve the user's last view selection from localStorage
+    var lastView = localStorage.getItem('mangaReaderView');
+    if (lastView === 'list') {
+        listViewFlag = true;
+        listView();
+        $('.manga-reader-view .list-view').addClass('active').siblings().removeClass('active');
+    } else {
+        pagedView();
+        $('.manga-reader-view .paged-view').addClass('active').siblings().removeClass('active');
+    }
 
     $('.manga-reader-view button').click(function() {
         $(this).addClass('active').siblings().removeClass('active');
         if ($(this).hasClass('paged-view')) {
-            $(document).off('keydown');
-            pagedViewEnabled = true;
+            listViewFlag = false;
             pagedView();
+            // Store the user's view selection in localStorage
+            localStorage.setItem('mangaReaderView', 'paged');
         } else {
+            listViewFlag = true;
             listView();
-            pagedViewEnabled = false;
-        }
-    });
-
-    $(document).keydown(function(e) {
-        if (pagedViewEnabled && mangaReader.is(':visible') && e.keyCode === 39) { // Right Arrow
-            if (currentIndex === totalPages - 1) {
-                alert('Last page reached');
-            } else {
-                currentIndex++;
-                pagedView();
-            }
-        } else if (pagedViewEnabled && mangaReader.is(':visible') && e.keyCode === 37) { // Left Arrow
-            if (currentIndex === 0) {
-                alert('First page reached');
-            } else {
-                currentIndex--;
-                pagedView();
-            }
+            // Store the user's view selection in localStorage
+            localStorage.setItem('mangaReaderView', 'list');
         }
     });
 
     mangaImages.click(function() {
-        if (!pagedViewEnabled) {
+        if (listViewFlag) {
             var currentImage = $(this);
             var nextImage = currentImage.next('img');
             if (nextImage.length) {
@@ -74,11 +86,10 @@ jQuery(document).ready(function($) {
         }
     });
 });
-// new
+
 $(window).on('load', function() {
     var mangaImages = $('.manga-images img');
     mangaImages.on('load', function() {
         $(this).removeClass('img-loading');
     });
 });
-// end new
