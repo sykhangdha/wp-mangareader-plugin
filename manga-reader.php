@@ -15,17 +15,17 @@ function manga_reader_shortcode($atts) {
 
     global $post;
 
-// Check if images were provided as shortcode attribute, if not, get image links from custom field
-if (empty($images)) {
-    $images = get_post_meta(get_the_ID(), 'image_links', true);
-    // Convert image links to array
-    $images = preg_split('/\r\n|[\r\n]/', $images);
-    $images = array_map('trim', $images);
-    $images = array_filter($images);
-} else {
-    // Convert image links to array
-    $images = preg_split('/\s*(?:,|$)\s*/', $images);
-}
+    // Check if images were provided as shortcode attribute, if not, get image links from custom field
+    if (empty($images)) {
+        $images = get_post_meta(get_the_ID(), 'image_links', true);
+        // Convert image links to array
+        $images = preg_split('/\r\n|[\r\n]/', $images);
+        $images = array_map('trim', $images);
+        $images = array_filter($images);
+    } else {
+        // Convert image links to array
+        $images = preg_split('/\s*(?:,|$)\s*/', $images);
+    }
 
     // Output HTML markup
     $output = '<div class="manga-reader">';
@@ -35,7 +35,7 @@ if (empty($images)) {
     $output .= '</div>';
     $output .= '<div class="manga-images">';
     foreach ($images as $image) {
-        $output .= '<img class="img-loading" src="' . $image . '" />';
+        $output .= '<img class="img-loading" src="' . $image . '" title="'.basename($image).'" alt="'.basename($image).'" />';
     }
     $output .= '</div>';
     $output .= '<div class="manga-pagination"></div>';
