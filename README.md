@@ -10,12 +10,12 @@ Example of that shortcode:
 
 
 # Functions
-  -Select between Paged/List View
-      -The reader will remember the last selected option
-      -For list view: Clicking on the image will scroll down to the next one.
-      -For paged view: Use arrow keys OR click on images to navigate
-  -Works with MOST wordpress themes
-      -You may need to add some .css changes to your theme to get it to work properly!
-  -Lightweight
-      -No unnecssary functions, just switching between views and navigation functions.
+  * Select between Paged/List View
+      * The reader will remember the last selected option
+      * For list view: Clicking on the image will scroll down to the next one.
+      * For paged view: Use arrow keys OR click on images to navigate
+  * Works with MOST wordpress themes
+      * You may need to add some .css changes to your theme to get it to work properly!
+  * Lightweight
+      * No unnecssary functions, just switching between views and navigation functions.
       
