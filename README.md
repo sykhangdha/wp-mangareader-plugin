@@ -4,7 +4,11 @@ a super simple manga reader that works with most wordpress themes using jQuery(j
 # ShortCode
 shortcode example: [manga_reader images="image1.jpg, image2.jpg, image3.jpg"] OR you can also use [manga_reader]  [/manga_reader]
 Example of that shortcode: 
+
+
 [<img src="http://i.epvpimg.com/qle7aab.png">]
+
+
 you would add the image links into the "src=" 
 
 # Functions
