@@ -34,8 +34,8 @@ function manga_reader_shortcode($atts) {
     $output .= '<button class="list-view">List View</button>';
     $output .= '</div>';
     $output .= '<div class="manga-images">';
-    foreach ($images as $image) {
-        $output .= '<img class="img-loading" src="' . $image . '" title="'.basename($image).'" alt="'.basename($image).'" />';
+    foreach ($images as $key => $image) {
+        $output .= '<img class="img-loading" src="' . $image . '" title="'.basename($image).'" alt="'.basename($image).'" data-post-id="' . get_the_ID() . '" data-post-category="' . get_the_category()[0]->slug . '" data-image-index="' . $key . '" />';
     }
     $output .= '</div>';
     $output .= '<div class="manga-pagination"></div>';
@@ -82,8 +82,31 @@ add_filter('query_vars', 'manga_reader_query_vars');
 function manga_reader_template($template) {
     global $wp_query;
     if (isset($wp_query->query_vars['manga'])) {
-        return plugin_dir_path(__FILE__) . 'manga-reader.php';
+        // Check if the user is in paged view or list view
+        $paged_view = isset($_COOKIE['manga_reader_view']) && $_COOKIE['manga_reader_view'] === 'paged';
+        $list_view = isset($_COOKIE['manga_reader_view']) && $_COOKIE['manga_reader_view'] === 'list';
+
+        // Check if last image is clicked
+        $last_image_clicked = isset($_GET['last_image_clicked']) && $_GET['last_image_clicked'] === 'true';
+
+        // Get the current post ID
+        $post_id = $wp_query->queried_object_id;
+
+        // Get the current category ID
+        $category = get_the_category($post_id);
+        $category_id = !empty($category) ? $category[0]->cat_ID : '';
+
+        // Get the next post ID from the same category
+        $next_post_id = get_next_post_id($category_id, $post_id);
+
+        // Load different templates based on view and last image clicked
+        if ($paged_view || $last_image_clicked) {
+            return plugin_dir_path(__FILE__) . 'manga-reader-paged.php';
+        } elseif ($list_view) {
+            return plugin_dir_path(__FILE__) . 'manga-reader-list.php';
+        } else {
+            return $template;
+        }
     }
     return $template;
 }
-add_filter('template_include', 'manga_reader_template');
