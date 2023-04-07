@@ -1,7 +1,7 @@
 # wp-mangareader-plugin
 a super simple manga reader that works with most wordpress themes using jQuery(js).
 Check it out here: https://hasky.rf.gd/read/
-Note: If for some reason the changes are not working just clear your cache for your wordpress website to update/refresh the manga-reader.js file!
+* Note: If for some reason the changes are not working just clear your cache for your wordpress website to update/refresh the manga-reader.js file!
 
 # ShortCode
 The reader, when activated, will add a custom_field named "image_links". Add image links(one image link per line) and the reader will detect all images inside the field.
