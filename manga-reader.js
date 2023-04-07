@@ -86,45 +86,51 @@ jQuery(document).ready(function($) {
                 alert('Last image reached');
             }
         } else {
-            if (currentIndex === totalPages - 1) {
-                alert('Last page reached');
-            } else {
-                currentIndex++;
-                pagedView();
-                if (currentIndex === totalPages - 1) {
-                    $(document).off('keydown');
-                }
-            }
+    if (currentIndex === totalPages - 1) {
+        var currentCategoryId = $('.nav-previous a').attr('data-category-id');
+        var nextPostUrl = $('.nav-next a').attr('href');
+        var categoryParam = '?in_same_term=true&taxonomy=' + currentCategoryId;
+        var nextPostUrlWithCategory = nextPostUrl + categoryParam;
+        window.location.href = nextPostUrlWithCategory;
+    } else {
+        currentIndex++;
+        pagedView();
+        if (currentIndex === totalPages - 1) {
+            $(document).off('keydown');
         }
-    });
+    }
+}
 });
 
-$(window).on('load', function() {
-    var mangaImages = $('.manga-reader .manga-images img');
-    var totalPages = mangaImages.length;
-
-    mangaImages.each(function(index) {
-        var image = $(this);
-        image.on('load', function() {
-            var aspectRatio = image.width() / image.height();
-            if (aspectRatio > 1) {
-                image.addClass('landscape');
+mangaImages.last().click(function() {
+    if (listViewFlag) {
+        var currentImage = $(this);
+        var nextImage = currentImage.next('img');
+        if (nextImage.length) {
+            var top = nextImage.offset().top;
+            $('html, body').animate({
+                scrollTop: top
+            }, 500);
+        } else {
+            // Check if there is a next post URL using WordPress post navigation
+            var nextPostUrl = $('.nav-next a').attr('href');
+            if (nextPostUrl) {
+                window.location.href = nextPostUrl;
             } else {
-                image.addClass('portrait');
-            }
-        });
-    });
-
-    // Add event listener for left arrow key
-    $(document).on('keydown', function(e) {
-        if (e.keyCode === 37) { // Left Arrow
-            // Check if there is a previous post in the same category using WordPress post navigation
-            var prevPostUrl = $('.nav-previous a').attr('href');
-            if (prevPostUrl) {
-                window.location.href = prevPostUrl;
-            } else {
-                alert('First page reached');
+                alert('Last page reached');
             }
         }
-    });
+    } else {
+        // Check if there is a next post URL using WordPress post navigation
+        var nextPostUrl = $('.nav-next a').attr('href');
+        if (nextPostUrl) {
+            var currentCategoryId = $('.nav-previous a').attr('data-category-id');
+            var categoryParam = '?in_same_term=true&taxonomy=' + currentCategoryId;
+            var nextPostUrlWithCategory = nextPostUrl + categoryParam;
+            window.location.href = nextPostUrlWithCategory;
+        } else {
+            alert('Last page reached');
+        }
+    }
+});
 });
