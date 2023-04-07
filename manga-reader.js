@@ -16,7 +16,10 @@ jQuery(document).ready(function($) {
                     // Check if there is a next post in the same category using WordPress post navigation
                     var nextPostUrl = $('.nav-next a').attr('href');
                     if (nextPostUrl) {
-                        window.location.href = nextPostUrl;
+                        var currentCategoryId = $('.nav-previous a').attr('data-category-id');
+                        var categoryParam = '?in_same_term=true&taxonomy=' + currentCategoryId;
+                        var nextPostUrlWithCategory = nextPostUrl + categoryParam;
+                        window.location.href = nextPostUrlWithCategory;
                     } else {
                         alert('Last page reached');
                     }
@@ -29,7 +32,10 @@ jQuery(document).ready(function($) {
                     // Check if there is a previous post in the same category using WordPress post navigation
                     var prevPostUrl = $('.nav-previous a').attr('href');
                     if (prevPostUrl) {
-                        window.location.href = prevPostUrl;
+                        var currentCategoryId = $('.nav-previous a').attr('data-category-id');
+                        var categoryParam = '?in_same_term=true&taxonomy=' + currentCategoryId;
+                        var prevPostUrlWithCategory = prevPostUrl + categoryParam;
+                        window.location.href = prevPostUrlWithCategory;
                     } else {
                         alert('First page reached');
                     }
@@ -76,61 +82,39 @@ jQuery(document).ready(function($) {
     mangaImages.click(function() {
         if (listViewFlag) {
             var currentImage = $(this);
-            var nextImage = currentImage.next('img');
+              var nextImage = currentImage.next('img');
             if (nextImage.length) {
                 var top = nextImage.offset().top;
                 $('html, body').animate({
                     scrollTop: top
                 }, 500);
             } else {
-                alert('Last image reached');
+                // Check if there is a next post URL using WordPress post navigation
+                var nextPostUrl = $('.nav-next a').attr('href');
+                if (nextPostUrl) {
+                    var currentCategoryId = $('.nav-previous a').attr('data-category-id');
+                    var categoryParam = '?in_same_term=true&taxonomy=' + currentCategoryId;
+                    var nextPostUrlWithCategory = nextPostUrl + categoryParam;
+                    window.location.href = nextPostUrlWithCategory;
+                } else {
+                    alert('Last page reached');
+                }
             }
         } else {
-    if (currentIndex === totalPages - 1) {
-        var currentCategoryId = $('.nav-previous a').attr('data-category-id');
-        var nextPostUrl = $('.nav-next a').attr('href');
-        var categoryParam = '?in_same_term=true&taxonomy=' + currentCategoryId;
-        var nextPostUrlWithCategory = nextPostUrl + categoryParam;
-        window.location.href = nextPostUrlWithCategory;
-    } else {
-        currentIndex++;
-        pagedView();
-        if (currentIndex === totalPages - 1) {
-            $(document).off('keydown');
-        }
-    }
-}
-});
-
-mangaImages.last().click(function() {
-    if (listViewFlag) {
-        var currentImage = $(this);
-        var nextImage = currentImage.next('img');
-        if (nextImage.length) {
-            var top = nextImage.offset().top;
-            $('html, body').animate({
-                scrollTop: top
-            }, 500);
-        } else {
-            // Check if there is a next post URL using WordPress post navigation
-            var nextPostUrl = $('.nav-next a').attr('href');
-            if (nextPostUrl) {
-                window.location.href = nextPostUrl;
+            if (currentIndex === totalPages - 1) {
+                var nextPostUrl = $('.nav-next a').attr('href');
+                if (nextPostUrl) {
+                    window.location.href = nextPostUrl;
+                } else {
+                    alert('Last page reached');
+                }
             } else {
-                alert('Last page reached');
+                currentIndex++;
+                pagedView();
+                if (currentIndex === totalPages - 1) {
+                    $(document).off('keydown');
+                }
             }
         }
-    } else {
-        // Check if there is a next post URL using WordPress post navigation
-        var nextPostUrl = $('.nav-next a').attr('href');
-        if (nextPostUrl) {
-            var currentCategoryId = $('.nav-previous a').attr('data-category-id');
-            var categoryParam = '?in_same_term=true&taxonomy=' + currentCategoryId;
-            var nextPostUrlWithCategory = nextPostUrl + categoryParam;
-            window.location.href = nextPostUrlWithCategory;
-        } else {
-            alert('Last page reached');
-        }
-    }
-});
-});
+    });
+	    });
