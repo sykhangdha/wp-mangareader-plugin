@@ -25,6 +25,9 @@ Note: if you want an option to use upload images from a wordpress gallery you ca
   * What's being worked on still?
       * Currently being worked on: A custom field to insert multiple image links and it will automatically insert the shortcode and links into the correct format.
       * You can test this out by downloading the zip of this repo and activating the plugin. Use classic editor and go to screen options and in custom_fields add one called image_links (it should be an option but if not type it in and press enter). Now any image links provied in the field(one image link per line) it will display it into the reader when you use the shortcode [manga_reader] 
+      
+
+Info about image link scrapper here: https://github.com/sykhangdha/wp-mangareader-plugin/tree/main/imagelinkscrapper
      
      
 
