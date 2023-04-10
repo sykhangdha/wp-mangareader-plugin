@@ -12,3 +12,5 @@ open PowerShell or Terminal in the directory you downloaded the script and run
 * 4)Image links will then be inserted into a .txt file and separated by chapter headings!
 
 Please note that the script is only meant to grab image links and not save the images! Again this is not part of the wordpress plugin, but it will grab image links so you can copy and paste them into the custom field provided by the plugin!
+
+# Recommended to use to MyMangaReader CMS
