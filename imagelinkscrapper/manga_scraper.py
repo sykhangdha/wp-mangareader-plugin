@@ -84,14 +84,11 @@ except Exception as e:
 
 finally:
     # Save chapter headings and image links to a single .txt file with timestamp appended to
-    output_file = "manga_data_{}.txt".format(timestamp)
-    with open(output_file, "w", encoding="utf-8") as f:
-        for chapter_heading, image_links in chapter_data.items():
-            f.write("Chapter: {}\n".format(chapter_heading))
-            for i, image_link in enumerate(image_links):
-                f.write("Image {}: {}\n".format(i + 1, image_link))
-            f.write("\n")
-    print("Chapter data saved to file: ", output_file)
-
-    # Close the webdriver
-    driver.quit()
+output_file = "manga_data_{}.txt".format(timestamp)
+with open(output_file, "w", encoding="utf-8") as f:
+    for chapter_heading, image_links in chapter_data.items():
+        f.write("Chapter: {}\n".format(chapter_heading))
+        for image_link in image_links:
+            f.write("{}\n".format(image_link))
+        f.write("\n")
+print("Chapter data saved to file: ", output_file)
