@@ -1,6 +1,6 @@
 # wp-mangareader-plugin
 a super simple manga reader that works with most wordpress themes using jQuery(js).
-Check it out here: (Changing host, rework of script currently in progress)
+Check it out here: http://hasky.zya.me/reader/
 * Note: If for some reason the changes are not working just clear your cache for your wordpress website to update/refresh the manga-reader.js file!
 
 # ShortCode
