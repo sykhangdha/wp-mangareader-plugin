@@ -1,0 +1,26 @@
+.container ul.pagination{
+	display: flex;
+	justify-content: space-between;
+	list-style-type: none;
+	padding: 0;
+}
+
+.container ul.pagination nav{
+	display: inline-block;
+}
+
+.container .previous{
+	float: left;
+}
+
+.container .next{
+	float: right;
+}
+
+/* Manga images */
+.hentry .manga-reader .manga-images{
+	text-align:center;
+	max-width:100%;
+	
+}
+
