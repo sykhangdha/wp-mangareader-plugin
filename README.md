@@ -5,9 +5,7 @@ Check it out here: http://hasky.zya.me/reader/
 
 # IMPORTANT
 While the reader should work with most themes, please include this code in single-post(usually called single.php in themes) for the reader to work properly.
-
-<nav class="next"><?php next_post_link('%link', '<strong>'.esc_html__('').'</strong> <span>%title</span>' , true); ?></nav>
-<nav class="previous"><?php previous_post_link('%link', '<strong>'.esc_html__('').'</strong> <span>%title</span>' , true); ?></nav>
+In the github repo there should be a file called single.php. Copy and paste the code where you want the links to be(recommended: usually anything under posts will work fine)
 
 # ShortCode
 The reader, when activated, will add a custom_field named "image_links". Add image links(one image link per line) and the reader will detect all images inside the field.
