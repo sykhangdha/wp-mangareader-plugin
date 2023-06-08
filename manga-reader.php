@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Manga Reader
  * Description: A manga reader plugin.
- * Version: 1.1
+ * Version: 1.5
  * Author: Ha Sky
  * Author URI: https://hasky.rf.gd
  **/
