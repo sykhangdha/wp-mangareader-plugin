@@ -3,6 +3,12 @@ a super simple manga reader that works with most wordpress themes using jQuery(j
 Check it out here: http://hasky.zya.me/reader/
 * Note: If for some reason the changes are not working just clear your cache for your wordpress website to update/refresh the manga-reader.js file!
 
+# IMPORTANT
+While the reader should work with most themes, please include this code in single-post(usually called single.php in themes) for the reader to work properly.
+
+<nav class="next"><?php next_post_link('%link', '<strong>'.esc_html__('').'</strong> <span>%title</span>' , true); ?></nav>
+<nav class="previous"><?php previous_post_link('%link', '<strong>'.esc_html__('').'</strong> <span>%title</span>' , true); ?></nav>
+
 # ShortCode
 The reader, when activated, will add a custom_field named "image_links". Add image links(one image link per line) and the reader will detect all images inside the field.
 [<img src="http://i.epvpimg.com/t1RIcab.png">]
