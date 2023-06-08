@@ -21,6 +21,9 @@
 .hentry .manga-reader .manga-images{
 	text-align:center;
 	max-width:100%;
-	
 }
 
+.manga-reader .manga-images img {
+  width: 600px;
+  max-width: 100%;
+}
