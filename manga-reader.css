@@ -5,9 +5,14 @@
 	padding: 0;
 }
 
+
 .container ul.pagination nav{
 	display: inline-block;
 }
+
+
+/* Modify the .container to the actual container name(you can use
+inspect element if you do not know what the container is called */
 
 .container .previous{
 	float: left;
