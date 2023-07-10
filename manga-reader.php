@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Manga Reader
  * Description: A manga reader plugin.
- * Version: 1.5
+ * Version: 2.0
  * Author: Ha Sky
  * Author URI: https://hasky.rf.gd
  **/
@@ -104,9 +104,28 @@ function manga_reader_template($template) {
             return plugin_dir_path(__FILE__) . 'manga-reader-paged.php';
         } elseif ($list_view) {
             return plugin_dir_path(__FILE__) . 'manga-reader-list.php';
-        } else {
-            return $template;
         }
+
+        return $template;
     }
     return $template;
 }
+add_filter('template_include', 'manga_reader_template');
+
+// Save previous post status
+function manga_reader_save_previous_post_status($post_id, $post) {
+    update_post_meta($post_id, '_previous_post_status', $post->post_status);
+}
+add_action('wp_insert_post', 'manga_reader_save_previous_post_status', 10, 2);
+
+// Add shortcode on post publish
+function manga_reader_add_shortcode_on_publish($post_id, $post) {
+    if ($post->post_type === 'post' && $post->post_status === 'publish') {
+        $content = $post->post_content;
+        if (strpos($content, '[manga_reader]') === false) {
+            $updated_content = $content . '[manga_reader]';
+            wp_update_post(array('ID' => $post_id, 'post_content' => $updated_content));
+        }
+    }
+}
+add_action('save_post', 'manga_reader_add_shortcode_on_publish', 10, 2);
