@@ -3,6 +3,7 @@ a super simple manga reader that works with most wordpress themes using jQuery(j
 Check it out here: http://hasky.zya.me/reader/
 * Note: If for some reason the changes are not working just clear your cache for your wordpress website to update/refresh the manga-reader.js file!
 * Recommended themes: Any wordpress theme that uses next_post function. These themes by Alx work the best with the reader. https://alx.media/themes/
+* Plugin now maintenance only which can be downloaded here: http://hasky.zya.me/2023/07/10/manga-reader-script-final-update/
 
 # IMPORTANT
 While the reader should work with most themes, please include this code in single-post(usually called single.php in themes) for the reader to work properly.
