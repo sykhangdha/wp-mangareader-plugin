@@ -15,7 +15,7 @@ The reader, when activated, will add a custom_field named "image_links". Add ima
 
 AFTER INPUTTING THE IMAGE LINKS PLEASE INSERT [manga_reader] shortcode into your post and it will display all the images from the custom field!
 
-Note: if you want an option to use upload images from a wordpress gallery you can modify the manga-reader.php and manga-reader.js files to do this. Since the site uses external hosts to grab image links this function is not included in this reader plugin. But you are free to modify this plugin however you want!
+Note: if you want an option to use upload images from a wordpress gallery you can modify the manga-reader.php and manga-reader.js files to do this. Since the site uses external hosts to grab image links this function is not included in this reader plugin. But you are free to modify this plugin however you want! https://github.com/sykhangdha/wp-mangareader-plugin/blob/main/single.php
 
 # Functions
   * Select between Paged/List View
