@@ -14,12 +14,10 @@ jQuery(document).ready(function($) {
       if (e.keyCode === 39) { // Right Arrow
         if (currentIndex === totalPages - 1) {
           // Check if there is a next post in the same category using WordPress post navigation
-          var nextPostUrl = $('.next a').attr('href');
+          var nextPostLink = $('.next a');
+          var nextPostUrl = nextPostLink.attr('href');
           if (nextPostUrl) {
-            var currentCategoryId = $('.entry-content').attr('data-category-id');
-            var categoryParam = '?in_same_term=true&taxonomy=' + currentCategoryId;
-            var nextPostUrlWithCategory = nextPostUrl + categoryParam;
-            window.location.href = nextPostUrlWithCategory;
+            window.location.href = nextPostUrl;
           } else {
             alert('Last page reached');
           }
@@ -30,12 +28,10 @@ jQuery(document).ready(function($) {
       } else if (e.keyCode === 37) { // Left Arrow
         if (currentIndex === 0) {
           // Check if there is a previous post in the same category using WordPress post navigation
-          var prevPostUrl = $('.previous a').attr('href');
+          var prevPostLink = $('.previous a');
+          var prevPostUrl = prevPostLink.attr('href');
           if (prevPostUrl) {
-            var currentCategoryId = $('.entry-content').attr('data-category-id');
-            var categoryParam = '?in_same_term=true&taxonomy=' + currentCategoryId;
-            var prevPostUrlWithCategory = prevPostUrl + categoryParam;
-            window.location.href = prevPostUrlWithCategory;
+            window.location.href = prevPostUrl;
           } else {
             alert('First page reached');
           }
@@ -90,19 +86,18 @@ jQuery(document).ready(function($) {
         }, 500);
       } else {
         // Check if there is a next post URL using WordPress post navigation
-        var nextPostUrl = $('.next a').attr('href');
+        var nextPostLink = $('.next a');
+        var nextPostUrl = nextPostLink.attr('href');
         if (nextPostUrl) {
-          var currentCategoryId = $('.entry-content').attr('data-category-id');
-          var categoryParam = '?in_same_term=true&taxonomy=' + currentCategoryId;
-          var nextPostUrlWithCategory = nextPostUrl + categoryParam;
-          window.location.href = nextPostUrlWithCategory;
+          window.location.href = nextPostUrl;
         } else {
           alert('Last page reached');
         }
       }
     } else {
       if (currentIndex === totalPages - 1) {
-        var nextPostUrl = $('.next a').attr('href');
+        var nextPostLink = $('.next a');
+        var nextPostUrl = nextPostLink.attr('href');
         if (nextPostUrl) {
           window.location.href = nextPostUrl;
         } else {
