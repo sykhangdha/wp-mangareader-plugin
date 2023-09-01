@@ -1,6 +1,6 @@
 # wp-mangareader-plugin
 a super simple manga reader that works with most wordpress themes using jQuery(js).
-Check it out here: http://hasky.zya.me/reader/
+Check it out here: [Reader V2 + New Host](http://skyha.decentrealizedweb.xyz/)
 * Note: If for some reason the changes are not working just clear your cache for your wordpress website to update/refresh the manga-reader.js file!
 * Recommended themes: Any wordpress theme that uses next_post function. These themes by Alx work the best with the reader. https://alx.media/themes/
 * Plugin now maintenance only which can be downloaded here: http://hasky.zya.me/2023/07/10/manga-reader-script-final-update/
@@ -29,8 +29,8 @@ Note: if you want an option to use upload images from a wordpress gallery you ca
   * Lightweight
       * No unnecssary functions, just switching between views and navigation functions.
   * What's being worked on still?
-      * Currently being worked on: A custom field to insert multiple image links and it will automatically insert the shortcode and links into the correct format.
-      * You can test this out by downloading the zip of this repo and activating the plugin. Use classic editor and go to screen options and in custom_fields add one called image_links (it should be an option but if not type it in and press enter). Now any image links provied in the field(one image link per line) it will display it into the reader when you use the shortcode [manga_reader] 
+      * ~~Currently being worked on: A custom field to insert multiple image links and it will automatically insert the shortcode and links into the correct format.~~ Added in V2
+      * ~~You can test this out by downloading the zip of this repo and activating the plugin. Use classic editor and go to screen options and in custom_fields add one called image_links (it should be an option but if not type it in and press enter). Now any image links provied in the field(one image link per line) it will display it into the reader when you use the shortcode [manga_reader]~~  Added in Maintenance Release 1
       
 
 Info about image link scrapper here: https://github.com/sykhangdha/wp-mangareader-plugin/tree/main/imagelinkscrapper
