@@ -1,6 +1,6 @@
 # wp-mangareader-plugin
 a super simple manga reader that works with most wordpress themes using jQuery(js).
-Check it out here: [Reader V2 + New Host](http://skyha.decentrealizedweb.xyz/)
+Check it out here: [Reader V2 + New Host](http://skyha.decentrealizedweb.xyz/reader)
 * Note: If for some reason the changes are not working just clear your cache for your wordpress website to update/refresh the manga-reader.js file!
 * Recommended themes: Any wordpress theme that uses next_post function. These themes by Alx work the best with the reader. https://alx.media/themes/
 * Plugin now maintenance only which can be downloaded here: http://hasky.zya.me/2023/07/10/manga-reader-script-final-update/
