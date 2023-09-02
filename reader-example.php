@@ -44,14 +44,6 @@ get_header();
         cursor: pointer; /* Add cursor pointer for clickable titles */
     }
 
-    /* Style for the "NEW" indicator */
-    .new-indicator {
-        color: red;
-        font-size: 14px;
-        font-weight: bold;
-        margin-bottom: 5px; /* Add spacing below the "NEW" indicator */
-    }
-
     /* Style for category headers */
     .category-header {
         font-size: 20px;
@@ -143,54 +135,44 @@ get_header();
                 $query = new WP_Query($args);
 
                 if ($query->have_posts()) :
-                    $first_post_today = false; // Check when post was added
                     echo '<div class="category-posts">';
-                    if (date('Y-m-d', strtotime($query->posts[0]->post_date)) === date('Y-m-d')) {
-                        // Check if the first post in the category was added today
-                        echo '<div class="new-indicator">NEW</div>';
-                        $first_post_today = true;
-                    }
                     echo '<div class="category-header">';
                     echo '<span class="post-title" onclick="toggleRecentPosts(' . $category->term_id . ')">' . $category->name . '</span>';
 
+                    // Get the date of the most recently updated post from this category
+                    $recent_post_date = get_the_modified_date('', $query->posts[0]);
+
                     // Display the recent post date below the category title
-                    if ($first_post_today) {
-                        echo '<div class="category-post-date">' . get_the_date('', $query->posts[0]) . '</div>';
-                    }
+                    echo '<div class="category-post-date">Last Updated: ' . $recent_post_date . '</div>';
 
                     echo '</div>';
                     echo '<div id="category-posts-' . $category->term_id . '" style="display:none;" class="grid-container">';
                     $post_count = 0; // Initialize a post count
                     foreach ($query->posts as $post) :
-                        $post_date = get_the_date('Y-m-d', $post);
-                        $today = date('Y-m-d');
-                        $new_indicator = ($first_post_today && strtotime($today) - strtotime($post_date) <= 3 * 24 * 60 * 60) ? '<div class="new-indicator">NEW</div>' : '';
                         $post_count++;
-
-                        if ($post_count <= 3) { // Display only the first 3 posts change to whatever you want
+                        if ($post_count <= 3) { // Display only the first 3 posts
                         ?>
                             <div class="grid-item">
-                                <?php echo $new_indicator; ?>
                                 <a href="<?php echo get_permalink($post->ID); ?>" class="post-title"><?php echo $post->post_title; ?></a>
                                 <div class="post-date"><?php echo get_the_date('', $post); ?></div>
                             </div>
                         <?php
                         }
-                        endforeach;
+                    endforeach;
 
-                        //  "More Chapters" button that links to the category archive
-                        echo '<div class="more-chapters">';
-                        echo '<a href="' . get_category_link($category->term_id) . '">More Chapters</a>';
-                        echo '</div>';
+                    // Add a "More Chapters" button that links to the category archive
+                    echo '<div class="more-chapters">';
+                    echo '<a href="' . get_category_link($category->term_id) . '">More Chapters</a>';
+                    echo '</div>';
 
-                        echo '</div>'; // Close the grid-container
-                        echo '</div>'; // Close the category-posts
-                    endif;
-                    wp_reset_postdata();
-                }
+                    echo '</div>'; // Close the grid-container
+                    echo '</div>'; // Close the category-posts
+                endif;
+                wp_reset_postdata();
             }
         }
-        ?>
-    </div>
+    }
+    ?>
+</div>
 
-    <?php get_footer(); ?>
+<?php get_footer(); ?>
