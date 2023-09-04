@@ -14,4 +14,4 @@ open PowerShell or Terminal in the directory you downloaded the script and run
 Please note that the script is only meant to grab image links and not save the images! Again this is not part of the wordpress plugin, but it will grab image links so you can copy and paste them into the custom field provided by the plugin!
 Currently looking for different method to lazy load images on the webpage, some mangas will probably not work with the script if there are too many images.
 
-# CURRENTLY WORKING ON UPDATING MYMANGAREADER CMS SCRIPT FROM CODECANYON(This will be in a totally different repo!) development for the wordpress plugin will be completely separate!
+# Again this is a STANDALONE script that is not meant to be run on your site. It is a python script that will grab image links from your browser(you will need chrome!)
