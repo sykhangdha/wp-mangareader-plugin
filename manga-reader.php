@@ -7,7 +7,6 @@
  * Author URI: https://hasky.rf.gd
  **/
 
-// Register shortcode
 function manga_reader_shortcode($atts) {
     // Extract shortcode attributes
     extract(shortcode_atts(array(
@@ -20,7 +19,7 @@ function manga_reader_shortcode($atts) {
     if (empty($images)) {
         $image_links = get_post_meta(get_the_ID(), 'image_links', true);
 
-        // Check if there are links in the custom field 'image_links'
+        // Check if there is any text in the custom field 'image_links'
         if (!empty($image_links)) {
             // Convert image links to array
             $images = preg_split('/\r\n|[\r\n]/', $image_links);
@@ -48,6 +47,18 @@ function manga_reader_shortcode($atts) {
 
     return $output;
 }
+
+// Load scripts
+function manga_reader_scripts() {
+    wp_enqueue_script('jquery');
+    wp_enqueue_script('manga-reader-script', plugins_url('manga-reader.js', __FILE__), array('jquery'), '1.2', true);
+
+    // Pass loading image URL to JavaScript file
+    wp_localize_script( 'manga-reader-script', 'manga_data', array(
+        'loading_image' => plugins_url( '/images/loading.gif', __FILE__ )
+    ));
+}
+add_action('wp_enqueue_scripts', 'manga_reader_scripts');
 
 // Register shortcode
 function manga_reader_register_shortcode() {
@@ -112,7 +123,7 @@ function manga_reader_add_shortcode_on_publish($post_id) {
     if ($post->post_type === 'post' && ($post->post_status === 'publish' || $post->post_status === 'draft')) {
         $image_links = get_post_meta($post_id, 'image_links', true);
 
-        // Check if there are links in the custom field 'image_links'
+        // Check if there is any text in the custom field 'image_links'
         if (!empty($image_links)) {
             $content = $post->post_content;
             if (strpos($content, '[manga_reader]') === false) {
@@ -122,4 +133,4 @@ function manga_reader_add_shortcode_on_publish($post_id) {
         }
     }
 }
-add_action('save_post', 'manga_reader_add_shortcode_on_publish', 10, 1);
+add_action('save_post', 'manga_reader_add_shortcode_on_publish', 10, 2);
