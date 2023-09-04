@@ -72,6 +72,19 @@ get_header();
         text-align: center;
         margin-bottom: 20px;
     }
+
+    /* Style for the search container */
+    #search-container {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    /* Style for the search input */
+    #category-search {
+        padding: 5px;
+        width: 100%;
+        max-width: 300px;
+    }
 </style>
 
 <script>
@@ -84,7 +97,28 @@ get_header();
             postsContainer.style.display = 'none';
         }
     }
+
+    // JavaScript function to filter categories by search input
+    function filterCategories() {
+        var searchInput = document.getElementById('category-search').value.toUpperCase();
+        var categoryHeaders = document.querySelectorAll('.category-header');
+
+        categoryHeaders.forEach(function (categoryHeader) {
+            var categoryName = categoryHeader.querySelector('.post-title').textContent.toUpperCase();
+            var categoryContainer = categoryHeader.parentElement;
+
+            if (categoryName.includes(searchInput)) {
+                categoryContainer.style.display = 'block';
+            } else {
+                categoryContainer.style.display = 'none';
+            }
+        });
+    }
 </script>
+
+<div id="search-container">
+    <input type="text" id="category-search" placeholder="Type to search for manga..." onkeyup="filterCategories()">
+</div>
 
 <div id="az-list">
     <?php
@@ -93,10 +127,10 @@ get_header();
     // Initialize an array to store the categories by the first letter
     $category_by_letter = array();
 
-   foreach ($categories as $category) {
-    if (in_array($category->term_id, array(1, 14))) {
-        continue; // Skip Category IDs 1 and 14
-    }
+    foreach ($categories as $category) {
+        if (in_array($category->term_id, array(1, 14))) {
+            continue; // Skip Category IDs 1 and 14
+        }
 
         $first_letter = strtoupper(substr($category->name, 0, 1));
         $category_by_letter[$first_letter][] = $category; // Group categories by the first letter
@@ -151,7 +185,7 @@ get_header();
                     foreach ($query->posts as $post) :
                         $post_count++;
                         if ($post_count <= 3) { // Display only the first 3 posts
-                        ?>
+                            ?>
                             <div class="grid-item">
                                 <a href="<?php echo get_permalink($post->ID); ?>" class="post-title"><?php echo $post->post_title; ?></a>
                                 <div class="post-date"><?php echo get_the_date('', $post); ?></div>
