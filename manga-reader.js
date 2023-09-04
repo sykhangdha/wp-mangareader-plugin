@@ -6,10 +6,19 @@ jQuery(document).ready(function($) {
   var totalPages = mangaImages.length;
   var listViewFlag = false;
 
+  var scrollToTop = function() {
+    var currentImage = $(mangaImages[currentIndex]);
+    var top = currentImage.offset().top;
+    $('html, body').animate({
+      scrollTop: top
+    }, 500);
+  };
+
   var pagedView = function() {
     var currentImage = $(mangaImages[currentIndex]);
     currentImage.show().siblings().hide();
     mangaPagination.text((currentIndex + 1) + '/' + totalPages);
+
     $(document).off('keydown').on('keydown', function(e) {
       if (e.keyCode === 39) { // Right Arrow
         if (currentIndex === totalPages - 1) {
@@ -23,6 +32,7 @@ jQuery(document).ready(function($) {
           }
         } else {
           currentIndex++;
+          scrollToTop(); // Scroll to the top of the image when going to the next image
           pagedView();
         }
       } else if (e.keyCode === 37) { // Left Arrow
@@ -37,6 +47,7 @@ jQuery(document).ready(function($) {
           }
         } else {
           currentIndex--;
+          scrollToTop(); // Scroll to the top of the image when going to the previous image
           pagedView();
         }
       }
@@ -105,6 +116,7 @@ jQuery(document).ready(function($) {
         }
       } else {
         currentIndex++;
+        scrollToTop(); // Scroll to the top of the image when going to the next image
         pagedView();
         if (currentIndex === totalPages - 1) {
           $(document).off('keydown');
