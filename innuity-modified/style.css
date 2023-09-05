@@ -1,0 +1,95 @@
+/*
+
+    The following CSS codes are created by the YellowPencil plugin.
+    https://yellowpencil.waspthemes.com/
+
+
+    T A B L E   O F   C O N T E N T S
+    ........................................................................
+
+    01. Global Styles
+    02. Post Template
+
+*/
+
+
+
+/*-----------------------------------------------*/
+/*  Global Styles                                */
+/*-----------------------------------------------*/
+body .magic-grid a img{
+	display:none;
+}
+
+body .entry-header .entry-meta .entry-author{
+	display:none;
+}
+
+body #respond{
+	display:none;
+}
+
+body .hentry .entry-footer .sharrre-footer{
+	display:none;
+}
+
+body .entry .manga-reader .manga-reader-view{
+	text-align:center;
+}
+
+body .manga-reader .manga-reader-view .active{
+	font-size:19px;
+	background-color:#97bafb;
+}
+
+
+
+/*-----------------------------------------------*/
+/*  Post Template                                */
+/*-----------------------------------------------*/
+body.single-post .sticky-header{
+	display:-webkit-sticky;
+	display:sticky;
+	top: 0;
+	background-color: rgba(255, 255, 255, 0.9);
+	z-index: 1000;
+	display:-webkit-box;
+	display:-webkit-flex;
+	display:-ms-flexbox;
+	display:flex;
+	-webkit-box-align: center;
+	-ms-flex-align: center;
+	align-items: center;
+	-webkit-box-pack: space-between;
+	-ms-flex-pack: space-between;
+	justify-content: space-between;
+	padding: 10px 20px;
+	-webkit-backdrop-filter: blur(5px);
+	backdrop-filter: blur(5px);
+}
+
+body.single-post .page-title-and-dropdown{
+	-webkit-box-flex: 1;
+	-ms-flex: 1;
+	flex: 1;
+	display:-webkit-box;
+	display:-webkit-flex;
+	display:-ms-flexbox;
+	display:flex;
+	-webkit-box-align: center;
+	-ms-flex-align: center;
+	align-items: center;
+}
+
+body.single-post .category-dropdown{
+	margin-left: 20px;
+}
+
+body.single-post #page-title-sticky .page-title-and-dropdown .page-title{
+	-webkit-box-shadow: none;
+	box-shadow: none;
+	border-style: none;
+	background-color: transparent;
+	padding: 0;
+	margin: 0;
+}
