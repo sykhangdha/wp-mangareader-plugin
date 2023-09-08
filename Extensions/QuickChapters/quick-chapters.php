@@ -118,8 +118,8 @@ add_shortcode('custom_category_post_generator', 'custom_category_post_generator_
 function add_custom_category_post_generator_submenu() {
     add_submenu_page(
         'edit.php', // Parent menu (Posts)
-        'Category Post Generator', // Page title
-        'Category Post Generator', // Menu title
+        'Chapter Generator', // Page title
+        'Category(chapter) Generator', // Menu title
         'manage_options', // Capability required to access the page
         'custom-category-post-generator', // Page slug
         'custom_category_post_generator_page' // Callback function to display the page
@@ -131,7 +131,7 @@ add_action('admin_menu', 'add_custom_category_post_generator_submenu');
 // Callback function to display the custom submenu page
 function custom_category_post_generator_page() {
     echo '<div class="wrap">';
-    echo '<h2>Category Post Generator</h2>';
+    echo '<h2>Quick Chapter Adder</h2>';
     echo do_shortcode('[custom_category_post_generator]');
     echo '</div>';
 }
