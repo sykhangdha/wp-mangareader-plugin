@@ -75,7 +75,7 @@ function custom_category_post_generator_shortcode($atts) {
                 $output .= '<p>Invalid category selected.</p>';
             }
         } else {
-            $output .= '<p>Please select a category and enter a valid starting number.</p>';
+            $output .= '<p>Please select a category(chapter) and enter a valid starting number.</p>';
         }
     } else {
         // Preselect the category from the session
@@ -84,9 +84,9 @@ function custom_category_post_generator_shortcode($atts) {
         // Output the form when the page initially loads
         $output .= '
             <form method="post">
-                <label for="category">Select a category (with no posts):</label>
+                <label for="category">Select a Manga:</label>
                 <select name="category">
-                    <option value="">Select Category</option>';
+                    <option value="">Select Here</option>';
 
         // Retrieve all categories with no posts
         $categories = get_categories(array(
@@ -118,8 +118,8 @@ add_shortcode('custom_category_post_generator', 'custom_category_post_generator_
 function add_custom_category_post_generator_submenu() {
     add_submenu_page(
         'edit.php', // Parent menu (Posts)
-        'Chapter Generator', // Page title
-        'Category(chapter) Generator', // Menu title
+        'Chapter Adder', // Page title
+        'Chapter Adder', // Menu title
         'manage_options', // Capability required to access the page
         'custom-category-post-generator', // Page slug
         'custom_category_post_generator_page' // Callback function to display the page
