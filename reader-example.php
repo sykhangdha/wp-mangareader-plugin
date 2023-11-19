@@ -90,7 +90,7 @@ get_header();
 <script>
     var defaultCategoryOrder; // Variable to store the default category order
 
-    // JavaScript function to toggle recent posts visibility
+      // JavaScript function to toggle recent posts visibility
     function toggleRecentPosts(categoryId) {
         var postsContainer = document.getElementById('category-posts-' + categoryId);
         if (postsContainer.style.display === 'none') {
@@ -170,11 +170,6 @@ get_header();
     }
 </script>
 
-
-
-
-
-
 <div id="search-container">
     <input type="text" id="category-search" placeholder="Type to search for manga..." onkeyup="filterCategories()">
 </div>
@@ -191,10 +186,6 @@ get_header();
     $category_by_letter = array();
 
     foreach ($categories as $category) {
-        if (in_array($category->term_id, array(1, 14))) {
-            continue; // Skip Category IDs 1 and 14
-        }
-
         $first_letter = strtoupper(substr($category->name, 0, 1));
         $category_by_letter[$first_letter][] = $category; // Group categories by the first letter
     }
