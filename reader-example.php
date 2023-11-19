@@ -88,7 +88,9 @@ get_header();
 </style>
 
 <script>
-    // JavaScript to toggle recent posts visibility
+    var defaultCategoryOrder; // Variable to store the default category order
+
+    // JavaScript function to toggle recent posts visibility
     function toggleRecentPosts(categoryId) {
         var postsContainer = document.getElementById('category-posts-' + categoryId);
         if (postsContainer.style.display === 'none') {
@@ -114,11 +116,72 @@ get_header();
             }
         });
     }
+
+    // JavaScript function to sort categories by the latest post date
+    function sortCategoriesByLatest() {
+        // Hide the A-Z listing
+        var azList = document.getElementById('az-list');
+        azList.style.display = 'none';
+
+        var categoryContainers = document.querySelectorAll('.category-posts');
+
+        // Convert Node List to Array for sorting
+        var categoryArray = Array.from(categoryContainers);
+
+        // Sort categories based on the latest post date
+        categoryArray.sort(function(a, b) {
+            var dateA = new Date(a.getAttribute('data-latest-post-date'));
+            var dateB = new Date(b.getAttribute('data-latest-post-date'));
+
+            return dateB - dateA;
+        });
+
+        // Update the DOM with the sorted categories
+        var allCategoriesPosts = document.querySelector('.all-categories-posts');
+        allCategoriesPosts.innerHTML = ''; // Clear existing content
+        categoryArray.forEach(function(category) {
+            allCategoriesPosts.appendChild(category);
+        });
+
+        // Store the default category order
+        defaultCategoryOrder = Array.from(categoryContainers);
+    }
+
+    // JavaScript function to sort categories A-Z
+    function sortCategoriesAZ() {
+        // Show the A-Z listing
+        var azList = document.getElementById('az-list');
+        azList.style.display = 'block';
+
+        // Reset the display property for all categories
+        var categoryContainers = document.querySelectorAll('.category-posts');
+        categoryContainers.forEach(function(category) {
+            category.style.display = 'block';
+        });
+
+        // Restore default category order if available
+        if (defaultCategoryOrder) {
+            var allCategoriesPosts = document.querySelector('.all-categories-posts');
+            allCategoriesPosts.innerHTML = ''; // Clear existing content
+            defaultCategoryOrder.forEach(function(category) {
+                allCategoriesPosts.appendChild(category);
+            });
+        }
+    }
 </script>
+
+
+
+
+
 
 <div id="search-container">
     <input type="text" id="category-search" placeholder="Type to search for manga..." onkeyup="filterCategories()">
 </div>
+
+<!-- Add buttons for sorting categories -->
+<button onclick="sortCategoriesAZ()">Sort A-Z</button>
+<button onclick="sortCategoriesByLatest()">Sort by Latest Chapter</button>
 
 <div id="az-list">
     <?php
@@ -158,7 +221,6 @@ get_header();
     <?php
     foreach (range('A', 'Z') as $letter) {
         if (isset($category_by_letter[$letter])) {
-            echo '<h2 id="' . $letter . '">' . $letter . '</h2>';
             foreach ($category_by_letter[$letter] as $category) {
                 $args = array(
                     'post_type' => 'post',
@@ -169,10 +231,12 @@ get_header();
                 $query = new WP_Query($args);
 
                 if ($query->have_posts()) :
-                    echo '<div class="category-posts">';
+                    echo '<div class="category-posts" data-latest-post-date="' . get_the_modified_date('', $query->posts[0]) . '">';
+                    // Display the category header with the letter and category name
                     echo '<div class="category-header">';
+                    echo '<h2 id="' . $letter . '">' . $letter . '</h2>';
                     echo '<span class="post-title" onclick="toggleRecentPosts(' . $category->term_id . ')">' . $category->name . '</span>';
-
+                    
                     // Get the date of the most recently updated post from this category
                     $recent_post_date = get_the_modified_date('', $query->posts[0]);
 
@@ -180,6 +244,7 @@ get_header();
                     echo '<div class="category-post-date">Last Updated: ' . $recent_post_date . '</div>';
 
                     echo '</div>';
+
                     echo '<div id="category-posts-' . $category->term_id . '" style="display:none;" class="grid-container">';
                     $post_count = 0; // Initialize a post count
                     foreach ($query->posts as $post) :
