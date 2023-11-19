@@ -9,6 +9,12 @@ Check it out here: [Reader V2 + New Host](http://skyha.decentrealizedweb.xyz/rea
 * Recommended themes: Any wordpress theme that uses next_post function. These themes by Alx work the best with the reader. https://alx.media/themes/
 * Plugin now maintenance only which can be downloaded here: https://github.com/sykhangdha/wp-mangareader-plugin/releases/tag/Maintenance
 
+
+# Extensions
+
+[Quick Chapter Adder](http://skyha.decentrealizedweb.xyz/quick-chapter-extensionwp-mangareader/)
+
+
 # IMPORTANT
 
 While the reader should work with most themes, please include this code in single-post(usually called single.php in themes) for the reader to work properly.
