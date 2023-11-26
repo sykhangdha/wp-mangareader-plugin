@@ -7,6 +7,7 @@ Check it out here: [Reader V2 + New Host](https://skyha.c1.is/reader/)
 * Note: If for some reason the changes are not working just clear your cache for your wordpress website to update/refresh the manga-reader.js file!
 * The reader plugin has now been implented to the latest release of mangareader-wp for users that want a basic wordpress theme: https://github.com/sykhangdha/mangareader-wp
 * Recommended themes: Any wordpress theme that uses next_post function. These themes by Alx work the best with the reader. https://alx.media/themes/
+* A modified version of innuity by alx is available here: https://github.com/sykhangdha/wp-mangareader-plugin/blob/main/innuity-modified/inunity.zip
 * Plugin now maintenance only which can be downloaded here: https://github.com/sykhangdha/wp-mangareader-plugin/releases/tag/Maintenance
 
 
