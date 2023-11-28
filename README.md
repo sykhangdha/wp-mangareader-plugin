@@ -2,7 +2,7 @@
 
 a super simple manga reader that works with most wordpress themes using jQuery(js).
 
-Check it out here: [Reader V2 + New Host](https://skyha.c1.is/reader/)
+Check it out here: Currently Down(hosting changes)
 * The page linked uses this php code to display the manga list. You can add the php code to a wordpress page using the WP editor or the plugin called "Insert PHP Code Snippet". [Manga List PHP code](https://github.com/sykhangdha/wp-mangareader-plugin/blob/main/reader-example.php)
 * Note: If for some reason the changes are not working just clear your cache for your wordpress website to update/refresh the manga-reader.js file!
 * The reader plugin has now been implented to the latest release of mangareader-wp for users that want a basic wordpress theme: https://github.com/sykhangdha/mangareader-wp
