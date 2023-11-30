@@ -2,8 +2,6 @@
 /*
 Template Name: Reader Page Example
 */
-
-get_header();
 ?>
 
 <style>
@@ -85,12 +83,25 @@ get_header();
         width: 100%;
         max-width: 300px;
     }
+
+    /* Style for the clickable text container */
+    .sort-links-container {
+        text-align: center;
+        margin-top: 10px;
+    }
+
+    /* Style for the clickable text */
+    .sort-links {
+        cursor: pointer;
+        text-decoration: underline;
+        margin: 0 10px; /* Adjust the margin as needed */
+    }
 </style>
 
 <script>
     var defaultCategoryOrder; // Variable to store the default category order
 
-      // JavaScript function to toggle recent posts visibility
+    // JavaScript function to toggle recent posts visibility
     function toggleRecentPosts(categoryId) {
         var postsContainer = document.getElementById('category-posts-' + categoryId);
         if (postsContainer.style.display === 'none') {
@@ -174,9 +185,11 @@ get_header();
     <input type="text" id="category-search" placeholder="Type to search for manga..." onkeyup="filterCategories()">
 </div>
 
-<!-- Add buttons for sorting categories -->
-<button onclick="sortCategoriesAZ()">Sort A-Z</button>
-<button onclick="sortCategoriesByLatest()">Sort by Latest Chapter</button>
+<!-- Use clickable text for sorting categories -->
+<div class="sort-links-container">
+    <span class="sort-links" onclick="sortCategoriesAZ()">Sort A-Z</span>
+    <span class="sort-links" onclick="sortCategoriesByLatest()">Sort by latest update</span>
+</div>
 
 <div id="az-list">
     <?php
@@ -186,6 +199,10 @@ get_header();
     $category_by_letter = array();
 
     foreach ($categories as $category) {
+        if (in_array($category->term_id, array(1))) {
+            continue; // Skip Category IDs 1 and 14
+        }
+
         $first_letter = strtoupper(substr($category->name, 0, 1));
         $category_by_letter[$first_letter][] = $category; // Group categories by the first letter
     }
@@ -205,11 +222,13 @@ get_header();
 </div>
 
 <div class="info-box">
-    Click on manga name to show chapters!
+    Click on manga name to show chapters! Refresh the reader if the manga list is not sorting properly!
 </div>
 
 <div class="all-categories-posts">
     <?php
+    $lastDisplayedLetter = ''; // Variable to store the last displayed letter
+
     foreach (range('A', 'Z') as $letter) {
         if (isset($category_by_letter[$letter])) {
             foreach ($category_by_letter[$letter] as $category) {
@@ -222,12 +241,20 @@ get_header();
                 $query = new WP_Query($args);
 
                 if ($query->have_posts()) :
-                    echo '<div class="category-posts" data-latest-post-date="' . get_the_modified_date('', $query->posts[0]) . '">';
-                    // Display the category header with the letter and category name
+                    // Display the category header only if the letter changes
+                    if ($lastDisplayedLetter !== $letter) {
+                        echo '<div class="category-posts" data-latest-post-date="' . get_the_modified_date('', $query->posts[0]) . '">';
+                        // Display the category header with the letter
+                        echo '<div class="category-header">';
+                        echo '<h2 id="' . $letter . '">' . $letter . '</h2>';
+                        echo '</div>';
+                        $lastDisplayedLetter = $letter;
+                    }
+
+                    // Display the rest of the category header
                     echo '<div class="category-header">';
-                    echo '<h2 id="' . $letter . '">' . $letter . '</h2>';
                     echo '<span class="post-title" onclick="toggleRecentPosts(' . $category->term_id . ')">' . $category->name . '</span>';
-                    
+
                     // Get the date of the most recently updated post from this category
                     $recent_post_date = get_the_modified_date('', $query->posts[0]);
 
@@ -264,5 +291,3 @@ get_header();
     }
     ?>
 </div>
-
-<?php get_footer(); ?>
