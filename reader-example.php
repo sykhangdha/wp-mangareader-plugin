@@ -99,87 +99,113 @@ Template Name: Reader Page Example
 </style>
 
 <script>
-    var defaultCategoryOrder; // Variable to store the default category order
+    document.addEventListener('DOMContentLoaded', function () {
+        var defaultCategoryOrder; // Variable to store the default category order
 
-    // JavaScript function to toggle recent posts visibility
-    function toggleRecentPosts(categoryId) {
-        var postsContainer = document.getElementById('category-posts-' + categoryId);
-        if (postsContainer.style.display === 'none') {
-            postsContainer.style.display = 'block';
-        } else {
-            postsContainer.style.display = 'none';
-        }
-    }
-
-    // JavaScript function to filter categories by search input
-    function filterCategories() {
-        var searchInput = document.getElementById('category-search').value.toUpperCase();
-        var categoryHeaders = document.querySelectorAll('.category-header');
-
-        categoryHeaders.forEach(function (categoryHeader) {
-            var categoryName = categoryHeader.querySelector('.post-title').textContent.toUpperCase();
-            var categoryContainer = categoryHeader.parentElement;
-
-            if (categoryName.includes(searchInput)) {
-                categoryContainer.style.display = 'block';
+        // JavaScript function to toggle recent posts visibility
+        function toggleRecentPosts(categoryId) {
+            var postsContainer = document.getElementById('category-posts-' + categoryId);
+            if (postsContainer.style.display === 'none') {
+                postsContainer.style.display = 'block';
             } else {
-                categoryContainer.style.display = 'none';
+                postsContainer.style.display = 'none';
             }
-        });
-    }
+        }
 
-    // JavaScript function to sort categories by the latest post date
-    function sortCategoriesByLatest() {
-        // Hide the A-Z listing
-        var azList = document.getElementById('az-list');
-        azList.style.display = 'none';
+        // JavaScript function to filter categories by search input
+        function filterCategories() {
+            var searchInput = document.getElementById('category-search').value.toUpperCase();
+            var categoryHeaders = document.querySelectorAll('.category-header');
 
-        var categoryContainers = document.querySelectorAll('.category-posts');
+            categoryHeaders.forEach(function (categoryHeader) {
+                var categoryName = categoryHeader.querySelector('.post-title').textContent.toUpperCase();
+                var categoryContainer = categoryHeader.parentElement;
 
-        // Convert Node List to Array for sorting
-        var categoryArray = Array.from(categoryContainers);
-
-        // Sort categories based on the latest post date
-        categoryArray.sort(function(a, b) {
-            var dateA = new Date(a.getAttribute('data-latest-post-date'));
-            var dateB = new Date(b.getAttribute('data-latest-post-date'));
-
-            return dateB - dateA;
-        });
-
-        // Update the DOM with the sorted categories
-        var allCategoriesPosts = document.querySelector('.all-categories-posts');
-        allCategoriesPosts.innerHTML = ''; // Clear existing content
-        categoryArray.forEach(function(category) {
-            allCategoriesPosts.appendChild(category);
-        });
-
-        // Store the default category order
-        defaultCategoryOrder = Array.from(categoryContainers);
-    }
-
-    // JavaScript function to sort categories A-Z
-    function sortCategoriesAZ() {
-        // Show the A-Z listing
-        var azList = document.getElementById('az-list');
-        azList.style.display = 'block';
-
-        // Reset the display property for all categories
-        var categoryContainers = document.querySelectorAll('.category-posts');
-        categoryContainers.forEach(function(category) {
-            category.style.display = 'block';
-        });
-
-        // Restore default category order if available
-        if (defaultCategoryOrder) {
-            var allCategoriesPosts = document.querySelector('.all-categories-posts');
-            allCategoriesPosts.innerHTML = ''; // Clear existing content
-            defaultCategoryOrder.forEach(function(category) {
-                allCategoriesPosts.appendChild(category);
+                if (categoryName.includes(searchInput)) {
+                    categoryContainer.style.display = 'block';
+                } else {
+                    categoryContainer.style.display = 'none';
+                }
             });
         }
-    }
+
+        // JavaScript function to sort categories A-Z
+        function sortCategoriesAZ() {
+            // Show the A-Z listing
+            var azList = document.getElementById('az-list');
+            azList.style.display = 'block';
+
+            // Reset the display property for all categories
+            var categoryContainers = document.querySelectorAll('.category-posts');
+            categoryContainers.forEach(function (category) {
+                category.style.display = 'block';
+            });
+
+            // Restore default category order if available
+            if (defaultCategoryOrder) {
+                var allCategoriesPosts = document.querySelector('.all-categories-posts');
+                allCategoriesPosts.innerHTML = ''; // Clear existing content
+                defaultCategoryOrder.forEach(function (category) {
+                    allCategoriesPosts.appendChild(category);
+                });
+            }
+        }
+
+        // JavaScript function to sort categories by the latest post date
+        function sortCategoriesByLatest() {
+            // Hide the A-Z listing
+            var azList = document.getElementById('az-list');
+            azList.style.display = 'none';
+
+            var categoryContainers = document.querySelectorAll('.category-posts');
+
+            // Convert Node List to Array for sorting
+            var categoryArray = Array.from(categoryContainers);
+
+            // Sort categories based on the latest post date
+            categoryArray.sort(function (a, b) {
+                var dateA = new Date(a.getAttribute('data-latest-post-date'));
+                var dateB = new Date(b.getAttribute('data-latest-post-date'));
+
+                return dateB - dateA;
+            });
+
+            // Update the DOM with the sorted categories
+            var allCategoriesPosts = document.querySelector('.all-categories-posts');
+            allCategoriesPosts.innerHTML = ''; // Clear existing content
+            categoryArray.forEach(function (category) {
+                allCategoriesPosts.appendChild(category);
+            });
+
+            // Store the default category order
+            defaultCategoryOrder = Array.from(categoryContainers);
+        }
+
+        // Add event listener to the "Sort A-Z" link
+        document.querySelector('.sort-links-az').addEventListener('click', function () {
+            sortCategoriesAZ();
+            filterCategories(); // Reapply filter after sorting
+        });
+
+        // Add event listener to the "Sort by latest update" link
+        document.querySelector('.sort-links-latest').addEventListener('click', function () {
+            sortCategoriesByLatest();
+            filterCategories(); // Reapply filter after sorting
+        });
+
+        // Add event listener to the category names for displaying posts
+        document.querySelectorAll('.post-title').forEach(function (title) {
+            title.addEventListener('click', function () {
+                var categoryId = title.getAttribute('data-category-id');
+                toggleRecentPosts(categoryId);
+            });
+        });
+
+        // Trigger the sorting function by the latest update by default
+        sortCategoriesByLatest();
+    });
 </script>
+
 
 <div id="search-container">
     <input type="text" id="category-search" placeholder="Type to search for manga..." onkeyup="filterCategories()">
@@ -187,8 +213,8 @@ Template Name: Reader Page Example
 
 <!-- Use clickable text for sorting categories -->
 <div class="sort-links-container">
-    <span class="sort-links" onclick="sortCategoriesAZ()">Sort A-Z</span>
-    <span class="sort-links" onclick="sortCategoriesByLatest()">Sort by latest update</span>
+    <span class="sort-links sort-links-az">Sort A-Z</span>
+    <span class="sort-links sort-links-latest">Sort by latest update</span>
 </div>
 
 <div id="az-list">
@@ -253,7 +279,7 @@ Template Name: Reader Page Example
 
                     // Display the rest of the category header
                     echo '<div class="category-header">';
-                    echo '<span class="post-title" onclick="toggleRecentPosts(' . $category->term_id . ')">' . $category->name . '</span>';
+                    echo '<span class="post-title" data-category-id="' . $category->term_id . '">' . $category->name . '</span>';
 
                     // Get the date of the most recently updated post from this category
                     $recent_post_date = get_the_modified_date('', $query->posts[0]);
