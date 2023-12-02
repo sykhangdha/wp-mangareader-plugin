@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Manga Reader
  * Description: A manga reader plugin.
- * Version: 3.0
+ * Version: MR3
  * Author: Ha Sky
  * Author URI: https://hasky.rf.gd
  **/
@@ -31,8 +31,50 @@ function manga_reader_shortcode($atts) {
         $images = preg_split('/\s*(?:,|$)\s*/', $images);
     }
 
-    // Output HTML markup
-    $output = '<div class="manga-reader">';
+    // Output HTML markup with added CSS styles
+    $output = '<style>
+        /* Respond */
+        #respond{
+            display: none;
+        }
+
+        /* Other styles for manga reader view */
+        .hentry .manga-reader .manga-reader-view{
+            text-align: center;
+        }
+
+        /* Manga images container - Updated styles for list view */
+        .hentry .manga-reader .manga-images{
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Change width percentage to change image size! */
+        .manga-reader .manga-images img{
+            width: 65%;
+            max-width: 100%;
+            height: auto;
+            margin-bottom: 10px;
+        }
+
+        .hentry .manga-reader .manga-images img{
+            transform: none;
+        }
+
+        /* Byline */
+        .hentry .entry-meta .byline{
+            display: none;
+        }
+
+        /* Left part */
+        .full-site .left-part{
+
+        }
+    </style>';
+
+    $output .= '<div class="manga-reader">';
     $output .= '<div class="manga-reader-view">';
     $output .= '<button class="paged-view active">Paged View</button>';
     $output .= '<button class="list-view">List View</button>';
