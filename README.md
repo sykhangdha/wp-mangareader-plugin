@@ -3,7 +3,6 @@
 a super simple manga reader that works with most wordpress themes using jQuery(js).
 https://skyha.rf.gd/reader/
 
-
 * The page linked uses this php code to display the manga list. You can add the php code to a wordpress page using the WP editor or the plugin called "Insert PHP Code Snippet". [Manga List PHP code](https://github.com/sykhangdha/wp-mangareader-plugin/blob/main/reader-example.php)
 * Note: If for some reason the changes are not working just clear your cache for your wordpress website to update/refresh the manga-reader.js file!
 * The reader plugin has now been implented to the latest release of mangareader-wp for users that want a basic wordpress theme: https://github.com/sykhangdha/mangareader-wp
@@ -11,11 +10,8 @@ https://skyha.rf.gd/reader/
 * A modified version of innuity by alx is available here: https://github.com/sykhangdha/wp-mangareader-plugin/blob/main/innuity-modified/inunity.zip
 * Plugin now maintenance only which can be downloaded here: https://github.com/sykhangdha/wp-mangareader-plugin/releases/tag/Maintenance
 
-
-# Extensions
-
-[Quick Chapter Adder](http://skyha.decentrealizedweb.xyz/quick-chapter-extensionwp-mangareader/)
-
+# Upcoming Changes for MR3 // 4.18.24 (NOT YET AVAILABLE)
+  * Reader Example page template from https://skyha.rf.gd/reader/
 
 # IMPORTANT
 
