@@ -99,82 +99,90 @@ Template Name: Reader Page Example
 </style>
 
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        var defaultCategoryOrder;
+document.addEventListener('DOMContentLoaded', function () {
+    var defaultCategoryOrder;
 
-        function toggleRecentPosts(categoryId) {
-            var postsContainer = document.getElementById('category-posts-' + categoryId);
-            postsContainer.style.display = (postsContainer.style.display === 'none') ? 'block' : 'none';
-        }
+    function toggleRecentPosts(categoryId) {
+        var postsContainer = document.getElementById('category-posts-' + categoryId);
+        postsContainer.style.display = (postsContainer.style.display === 'none') ? 'block' : 'none';
+    }
 
-        function filterCategories() {
-            var searchInput = document.getElementById('category-search').value.toUpperCase();
-            var categoryHeaders = document.querySelectorAll('.category-header');
+    function filterCategories() {
+        var searchInput = document.getElementById('category-search').value.trim().toUpperCase();
+        var categoryHeaders = document.querySelectorAll('.category-header');
 
-            categoryHeaders.forEach(function (categoryHeader) {
-                var categoryName = categoryHeader.querySelector('.post-title').textContent.toUpperCase();
-                var categoryContainer = categoryHeader.parentElement;
+        categoryHeaders.forEach(function (categoryHeader) {
+            var categoryTitles = categoryHeader.querySelectorAll('.post-title');
+            var categoryContainer = categoryHeader.parentElement;
 
-                categoryContainer.style.display = categoryName.includes(searchInput) ? 'block' : 'none';
-            });
-        }
-
-        function sortCategoriesAZ() {
-            // Sort the categories alphabetically
-            var categoryContainers = document.querySelectorAll('.category-posts');
-            var sortedCategoryArray = Array.from(categoryContainers).sort(function (a, b) {
-                var titleA = a.querySelector('.post-title').textContent.toUpperCase();
-                var titleB = b.querySelector('.post-title').textContent.toUpperCase();
-                return titleA.localeCompare(titleB);
+            // Check if any category name within this category matches the search term
+            var showCategory = Array.from(categoryTitles).some(function (categoryTitle) {
+                var categoryName = categoryTitle.textContent.trim().toUpperCase();
+                return categoryName.includes(searchInput);
             });
 
-            // Update the DOM with the sorted categories
-            var allCategoriesPosts = document.querySelector('.all-categories-posts');
-            allCategoriesPosts.innerHTML = '';
-            sortedCategoryArray.forEach(function (category) {
-                allCategoriesPosts.appendChild(category);
-            });
-        }
+            // Show or hide the entire category based on the search result
+            categoryContainer.style.display = showCategory ? 'block' : 'none';
+        });
+    }
 
-        function sortCategoriesByLatest() {
-            // Sort the categories by the latest post date
-            var categoryContainers = document.querySelectorAll('.category-posts');
-            var sortedCategoryArray = Array.from(categoryContainers).sort(function (a, b) {
-                var dateA = new Date(a.getAttribute('data-latest-post-date'));
-                var dateB = new Date(b.getAttribute('data-latest-post-date'));
-                return dateB - dateA;
-            });
-
-            // Update the DOM with the sorted categories
-            var allCategoriesPosts = document.querySelector('.all-categories-posts');
-            allCategoriesPosts.innerHTML = '';
-            sortedCategoryArray.forEach(function (category) {
-                allCategoriesPosts.appendChild(category);
-            });
-        }
-
-        document.querySelector('.sort-links-az').addEventListener('click', function () {
-            sortCategoriesAZ();
-            filterCategories();
+    function sortCategoriesAZ() {
+        var categoryContainers = document.querySelectorAll('.category-posts');
+        var sortedCategoryArray = Array.from(categoryContainers).sort(function (a, b) {
+            var titleA = a.querySelector('.post-title').textContent.toUpperCase();
+            var titleB = b.querySelector('.post-title').textContent.toUpperCase();
+            return titleA.localeCompare(titleB);
         });
 
-        document.querySelector('.sort-links-latest').addEventListener('click', function () {
-            sortCategoriesByLatest();
-            filterCategories();
+        var allCategoriesPosts = document.querySelector('.all-categories-posts');
+        allCategoriesPosts.innerHTML = '';
+        sortedCategoryArray.forEach(function (category) {
+            allCategoriesPosts.appendChild(category);
+        });
+    }
+
+    function sortCategoriesByLatest() {
+        var categoryContainers = document.querySelectorAll('.category-posts');
+        var sortedCategoryArray = Array.from(categoryContainers).sort(function (a, b) {
+            var dateA = new Date(a.getAttribute('data-latest-post-date'));
+            var dateB = new Date(b.getAttribute('data-latest-post-date'));
+            return dateB - dateA;
         });
 
-        document.querySelectorAll('.post-title').forEach(function (title) {
-            title.addEventListener('click', function () {
-                var categoryId = title.getAttribute('data-category-id');
-                toggleRecentPosts(categoryId);
-            });
+        var allCategoriesPosts = document.querySelector('.all-categories-posts');
+        allCategoriesPosts.innerHTML = '';
+        sortedCategoryArray.forEach(function (category) {
+            allCategoriesPosts.appendChild(category);
         });
+    }
 
-        sortCategoriesByLatest(); // Trigger the sorting function by the latest update by default
+    document.querySelector('.sort-links-az').addEventListener('click', function () {
+        sortCategoriesAZ();
+        filterCategories();
     });
+
+    document.querySelector('.sort-links-latest').addEventListener('click', function () {
+        sortCategoriesByLatest();
+        filterCategories();
+    });
+
+    document.querySelectorAll('.post-title').forEach(function (title) {
+        title.addEventListener('click', function () {
+            var categoryId = title.getAttribute('data-category-id');
+            toggleRecentPosts(categoryId);
+        });
+    });
+
+    sortCategoriesByLatest();
+
+    document.getElementById('category-search').addEventListener('input', function () {
+        filterCategories();
+    });
+});
+
+
+
 </script>
-
-
 
 <div id="search-container">
     <input type="text" id="category-search" placeholder="Type to search for manga..." onkeyup="filterCategories()">
