@@ -100,19 +100,13 @@ Template Name: Reader Page Example
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-        var defaultCategoryOrder; // Variable to store the default category order
+        var defaultCategoryOrder;
 
-        // JavaScript function to toggle recent posts visibility
         function toggleRecentPosts(categoryId) {
             var postsContainer = document.getElementById('category-posts-' + categoryId);
-            if (postsContainer.style.display === 'none') {
-                postsContainer.style.display = 'block';
-            } else {
-                postsContainer.style.display = 'none';
-            }
+            postsContainer.style.display = (postsContainer.style.display === 'none') ? 'block' : 'none';
         }
 
-        // JavaScript function to filter categories by search input
         function filterCategories() {
             var searchInput = document.getElementById('category-search').value.toUpperCase();
             var categoryHeaders = document.querySelectorAll('.category-header');
@@ -121,79 +115,54 @@ Template Name: Reader Page Example
                 var categoryName = categoryHeader.querySelector('.post-title').textContent.toUpperCase();
                 var categoryContainer = categoryHeader.parentElement;
 
-                if (categoryName.includes(searchInput)) {
-                    categoryContainer.style.display = 'block';
-                } else {
-                    categoryContainer.style.display = 'none';
-                }
+                categoryContainer.style.display = categoryName.includes(searchInput) ? 'block' : 'none';
             });
         }
 
-        // JavaScript function to sort categories A-Z
         function sortCategoriesAZ() {
-            // Show the A-Z listing
-            var azList = document.getElementById('az-list');
-            azList.style.display = 'block';
-
-            // Reset the display property for all categories
+            // Sort the categories alphabetically
             var categoryContainers = document.querySelectorAll('.category-posts');
-            categoryContainers.forEach(function (category) {
-                category.style.display = 'block';
+            var sortedCategoryArray = Array.from(categoryContainers).sort(function (a, b) {
+                var titleA = a.querySelector('.post-title').textContent.toUpperCase();
+                var titleB = b.querySelector('.post-title').textContent.toUpperCase();
+                return titleA.localeCompare(titleB);
             });
 
-            // Restore default category order if available
-            if (defaultCategoryOrder) {
-                var allCategoriesPosts = document.querySelector('.all-categories-posts');
-                allCategoriesPosts.innerHTML = ''; // Clear existing content
-                defaultCategoryOrder.forEach(function (category) {
-                    allCategoriesPosts.appendChild(category);
-                });
-            }
+            // Update the DOM with the sorted categories
+            var allCategoriesPosts = document.querySelector('.all-categories-posts');
+            allCategoriesPosts.innerHTML = '';
+            sortedCategoryArray.forEach(function (category) {
+                allCategoriesPosts.appendChild(category);
+            });
         }
 
-        // JavaScript function to sort categories by the latest post date
         function sortCategoriesByLatest() {
-            // Hide the A-Z listing
-            var azList = document.getElementById('az-list');
-            azList.style.display = 'none';
-
+            // Sort the categories by the latest post date
             var categoryContainers = document.querySelectorAll('.category-posts');
-
-            // Convert Node List to Array for sorting
-            var categoryArray = Array.from(categoryContainers);
-
-            // Sort categories based on the latest post date
-            categoryArray.sort(function (a, b) {
+            var sortedCategoryArray = Array.from(categoryContainers).sort(function (a, b) {
                 var dateA = new Date(a.getAttribute('data-latest-post-date'));
                 var dateB = new Date(b.getAttribute('data-latest-post-date'));
-
                 return dateB - dateA;
             });
 
             // Update the DOM with the sorted categories
             var allCategoriesPosts = document.querySelector('.all-categories-posts');
-            allCategoriesPosts.innerHTML = ''; // Clear existing content
-            categoryArray.forEach(function (category) {
+            allCategoriesPosts.innerHTML = '';
+            sortedCategoryArray.forEach(function (category) {
                 allCategoriesPosts.appendChild(category);
             });
-
-            // Store the default category order
-            defaultCategoryOrder = Array.from(categoryContainers);
         }
 
-        // Add event listener to the "Sort A-Z" link
         document.querySelector('.sort-links-az').addEventListener('click', function () {
             sortCategoriesAZ();
-            filterCategories(); // Reapply filter after sorting
+            filterCategories();
         });
 
-        // Add event listener to the "Sort by latest update" link
         document.querySelector('.sort-links-latest').addEventListener('click', function () {
             sortCategoriesByLatest();
-            filterCategories(); // Reapply filter after sorting
+            filterCategories();
         });
 
-        // Add event listener to the category names for displaying posts
         document.querySelectorAll('.post-title').forEach(function (title) {
             title.addEventListener('click', function () {
                 var categoryId = title.getAttribute('data-category-id');
@@ -201,17 +170,16 @@ Template Name: Reader Page Example
             });
         });
 
-        // Trigger the sorting function by the latest update by default
-        sortCategoriesByLatest();
+        sortCategoriesByLatest(); // Trigger the sorting function by the latest update by default
     });
 </script>
+
 
 
 <div id="search-container">
     <input type="text" id="category-search" placeholder="Type to search for manga..." onkeyup="filterCategories()">
 </div>
 
-<!-- Use clickable text for sorting categories -->
 <div class="sort-links-container">
     <span class="sort-links sort-links-az">Sort A-Z</span>
     <span class="sort-links sort-links-latest">Sort by latest update</span>
@@ -219,30 +187,23 @@ Template Name: Reader Page Example
 
 <div id="az-list">
     <?php
-    $categories = get_terms('category'); // Get all categories
+    $categories = get_terms('category');
 
-    // Initialize an array to store the categories by the first letter
     $category_by_letter = array();
 
     foreach ($categories as $category) {
         if (in_array($category->term_id, array(1))) {
-            continue; // Skip Category IDs 1 and 14
+            continue;
         }
 
         $first_letter = strtoupper(substr($category->name, 0, 1));
-        $category_by_letter[$first_letter][] = $category; // Group categories by the first letter
+        $category_by_letter[$first_letter][] = $category;
     }
 
-    // Sort the category by letter array
     ksort($category_by_letter);
 
-    // Display the A-Z letters
     foreach (range('A', 'Z') as $letter) {
-        if (isset($category_by_letter[$letter])) {
-            echo '<a href="#' . $letter . '">' . $letter . '</a>';
-        } else {
-            echo '<span>' . $letter . '</span>';
-        }
+        echo isset($category_by_letter[$letter]) ? '<a href="#' . $letter . '">' . $letter . '</a>' : '<span>' . $letter . '</span>';
     }
     ?>
 </div>
@@ -253,7 +214,7 @@ Template Name: Reader Page Example
 
 <div class="all-categories-posts">
     <?php
-    $lastDisplayedLetter = ''; // Variable to store the last displayed letter
+    $lastDisplayedLetter = '';
 
     foreach (range('A', 'Z') as $letter) {
         if (isset($category_by_letter[$letter])) {
@@ -267,33 +228,28 @@ Template Name: Reader Page Example
                 $query = new WP_Query($args);
 
                 if ($query->have_posts()) :
-                    // Display the category header only if the letter changes
                     if ($lastDisplayedLetter !== $letter) {
                         echo '<div class="category-posts" data-latest-post-date="' . get_the_modified_date('', $query->posts[0]) . '">';
-                        // Display the category header with the letter
                         echo '<div class="category-header">';
                         echo '<h2 id="' . $letter . '">' . $letter . '</h2>';
                         echo '</div>';
                         $lastDisplayedLetter = $letter;
                     }
 
-                    // Display the rest of the category header
                     echo '<div class="category-header">';
                     echo '<span class="post-title" data-category-id="' . $category->term_id . '">' . $category->name . '</span>';
 
-                    // Get the date of the most recently updated post from this category
                     $recent_post_date = get_the_modified_date('', $query->posts[0]);
 
-                    // Display the recent post date below the category title
                     echo '<div class="category-post-date">Last Updated: ' . $recent_post_date . '</div>';
-
                     echo '</div>';
 
                     echo '<div id="category-posts-' . $category->term_id . '" style="display:none;" class="grid-container">';
-                    $post_count = 0; // Initialize a post count
+                    $post_count = 0;
+
                     foreach ($query->posts as $post) :
                         $post_count++;
-                        if ($post_count <= 3) { // Display only the first 3 posts
+                        if ($post_count <= 3) {
                             ?>
                             <div class="grid-item">
                                 <a href="<?php echo get_permalink($post->ID); ?>" class="post-title"><?php echo $post->post_title; ?></a>
@@ -303,13 +259,12 @@ Template Name: Reader Page Example
                         }
                     endforeach;
 
-                    // Add a "More Chapters" button that links to the category archive
                     echo '<div class="more-chapters">';
                     echo '<a href="' . get_category_link($category->term_id) . '">More Chapters</a>';
                     echo '</div>';
 
-                    echo '</div>'; // Close the grid-container
-                    echo '</div>'; // Close the category-posts
+                    echo '</div>';
+                    echo '</div>';
                 endif;
                 wp_reset_postdata();
             }
