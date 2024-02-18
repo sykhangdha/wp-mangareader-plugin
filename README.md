@@ -12,6 +12,7 @@ https://skyha.rf.gd/reader/
 
 # Upcoming Changes for MR3 // 4.18.24 (NOT YET AVAILABLE)
   * Reader Example page template from https://skyha.rf.gd/reader/
+  * Documentation for how to use the reader plugin
 
 # IMPORTANT
 
