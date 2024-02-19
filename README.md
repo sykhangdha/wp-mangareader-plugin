@@ -1,7 +1,7 @@
 # wp-mangareader-plugin
 
 # Latest Release: Removed for now! Fixing issue with reader view // 4.19.24 
-  * Click link above to download
+  * The update was removed for now as there was another issue with paged/reader view. I am currently in the process of making the reader more mobile friendly and using lightbox gallery view for a better reading experience. The javascript code being included is from https://dimsemenov.com/plugins/magnific-popup/
 
 a super simple manga reader that works with most wordpress themes using jQuery(js).
 https://skyha.rf.gd/reader/
