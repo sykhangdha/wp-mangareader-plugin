@@ -1,5 +1,8 @@
 # wp-mangareader-plugin
 
+# Latest Release: [wp-mangareader-MR3.zip!](http://https://github.com/sykhangdha/wp-mangareader-plugin/releases/ "Download Now!") // 4.19.24 
+  * Click link above to download
+
 a super simple manga reader that works with most wordpress themes using jQuery(js).
 https://skyha.rf.gd/reader/
 
@@ -7,12 +10,9 @@ https://skyha.rf.gd/reader/
 * Note: If for some reason the changes are not working just clear your cache for your wordpress website to update/refresh the manga-reader.js file!
 * The reader plugin has now been implented to the latest release of mangareader-wp for users that want a basic wordpress theme: https://github.com/sykhangdha/mangareader-wp
 * Recommended themes: Any wordpress theme that uses next_post function. These themes by Alx work the best with the reader. https://alx.media/themes/
-* A modified version of innuity by alx is available here: https://github.com/sykhangdha/wp-mangareader-plugin/blob/main/innuity-modified/inunity.zip
-* Plugin now maintenance only which can be downloaded here: https://github.com/sykhangdha/wp-mangareader-plugin/releases/tag/Maintenance
+* Plugin now maintenance only which can be downloaded here: https://github.com/sykhangdha/wp-mangareader-plugin/releases/
 
-# Upcoming Changes for MR3 // 4.18.24 (NOT YET AVAILABLE)
-  * Reader Example page template from https://skyha.rf.gd/reader/
-  * Documentation for how to use the reader plugin
+
 
 # IMPORTANT
 
