@@ -182,68 +182,54 @@ function manga_reader_shortcode($atts) {
         $images = preg_split('/\s*(?:,|$)\s*/', $images);
     }
 
-   // Output HTML markup with added CSS styles
-$output = '<style>
-    /* Respond */
-    #respond {
-        display: none;
-    }
-
-    /* Other styles for manga reader view */
-    .hentry .manga-reader .manga-reader-view {
-        text-align: center;
-    }
-
-    /* Manga images container - Updated styles for list view */
-    .hentry .manga-reader .manga-images {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
-        align-items: center;
-    }
-
-    /* Change width percentage to change image size! */
-    .manga-reader .manga-images img {
-        width: 90%;
-        max-width: 100%;
-        height: auto;
-        margin-bottom: 10px;
-    }
-
-    .hentry .manga-reader .manga-images img {
-        transform: none;
-    }
-
-    /* Byline */
-    .hentry .entry-meta .byline {
-        display: none;
-    }
-
-    /* Left part */
-    .full-site .left-part {
-
-    }
-
-    /* Mobile responsiveness */
-    @media only screen and (max-width: 600px) {
-        .manga-reader .manga-images img {
-            width: 100%;
+    // Output HTML markup with added CSS styles and Magnific Popup attributes
+    $output = '<style>
+        /* Other styles for manga reader view */
+        .hentry .manga-reader .manga-images {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
         }
-    }
-</style>';
 
+        /* Change width percentage to change image size! */
+        .manga-reader .manga-images a {
+            width: 90%;
+            max-width: 100%;
+            height: auto;
+            margin-bottom: 10px;
+        }
+
+        .hentry .manga-reader .manga-images img {
+            transform: none;
+        }
+
+        /* Byline */
+        .hentry .entry-meta .byline {
+            display: none;
+        }
+
+        /* Left part */
+        .full-site .left-part {
+
+        }
+
+        /* Mobile responsiveness */
+        @media only screen and (max-width: 600px) {
+            .manga-reader .manga-images a {
+                width: 100%;
+            }
+        }
+    </style>';
 
     $output .= '<div class="manga-reader">';
-    $output .= '<div class="manga-reader-view">';
-    $output .= '<button class="paged-view active">Paged View</button>';
-    $output .= '<button class="list-view">List View</button>';
-    $output .= '</div>';
     $output .= '<div class="manga-images">';
     foreach ($images as $key => $image) {
-        $output .= '<img class="img-loading" src="' . $image . '" title="'.basename($image).'" alt="'.basename($image).'" data-post-id="' . get_the_ID() . '" data-post-category="' . get_the_category()[0]->slug . '" data-image-index="' . $key . '" />';
+        $output .= '<a class="img-popup" href="' . $image . '" title="'.basename($image).'" data-post-id="' . get_the_ID() . '" data-post-category="' . get_the_category()[0]->slug . '" data-image-index="' . $key . '">';
+        $output .= '<img class="img-loading" src="' . $image . '" alt="'.basename($image).'" />';
+        $output .= '</a>';
     }
     $output .= '</div>';
-    $output .= '<div class="manga-pagination"></div>';
     $output .= '</div>';
 
     return $output;
@@ -252,12 +238,31 @@ $output = '<style>
 // Load scripts
 function manga_reader_scripts() {
     wp_enqueue_script('jquery');
-    wp_enqueue_script('manga-reader-script', plugins_url('manga-reader.js', __FILE__), array('jquery'), '1.2', true);
+    wp_enqueue_script('magnific-popup', 'https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/jquery.magnific-popup.min.js', array('jquery'), '1.1.0', true);
+    wp_enqueue_script('manga-reader-script', plugins_url('manga-reader.js', __FILE__), array('jquery', 'magnific-popup'), '3.2', true);
+
+    // Preload images before initializing Magnific Popup
+    $image_links = get_post_meta(get_the_ID(), 'image_links', true);
+
+    if (!empty($image_links)) {
+        $images = preg_split('/\r\n|[\r\n]/', $image_links);
+        $images = array_map('trim', $images);
+        $images = array_filter($images);
+
+        echo '<script>';
+        foreach ($images as $image) {
+            echo 'var preloadImage = new Image(); preloadImage.src = "' . $image . '";';
+        }
+        echo '</script>';
+    }
 
     // Pass loading image URL to JavaScript file
-    wp_localize_script( 'manga-reader-script', 'manga_data', array(
-        'loading_image' => plugins_url( '/images/loading.gif', __FILE__ )
+    wp_localize_script('manga-reader-script', 'manga_data', array(
+        'loading_image' => plugins_url('/images/loading.gif', __FILE__)
     ));
+
+    // Add Magnific Popup styles
+    wp_enqueue_style('magnific-popup', 'https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/magnific-popup.min.css');
 }
 add_action('wp_enqueue_scripts', 'manga_reader_scripts');
 
@@ -287,13 +292,6 @@ add_filter('query_vars', 'manga_reader_query_vars');
 function manga_reader_template($template) {
     global $wp_query;
     if (isset($wp_query->query_vars['manga'])) {
-        // Check if the user is in paged view or list view
-        $paged_view = isset($_COOKIE['manga_reader_view']) && $_COOKIE['manga_reader_view'] === 'paged';
-        $list_view = isset($_COOKIE['manga_reader_view']) && $_COOKIE['manga_reader_view'] === 'list';
-
-        // Check if last image is clicked
-        $last_image_clicked = isset($_GET['last_image_clicked']) && $_GET['last_image_clicked'] === 'true';
-
         // Get the current post ID
         $post_id = $wp_query->queried_object_id;
 
@@ -301,17 +299,8 @@ function manga_reader_template($template) {
         $category = get_the_category($post_id);
         $category_id = !empty($category) ? $category[0]->cat_ID : '';
 
-        // Get the next post ID from the same category
-        $next_post_id = get_next_post_id($category_id, $post_id);
-
         // Load different templates based on view and last image clicked
-        if ($paged_view || $last_image_clicked) {
-            return plugin_dir_path(__FILE__) . 'manga-reader-paged.php';
-        } elseif ($list_view) {
-            return plugin_dir_path(__FILE__) . 'manga-reader-list.php';
-        }
-
-        return $template;
+        return plugin_dir_path(__FILE__) . 'manga-reader.php';
     }
     return $template;
 }
