@@ -182,48 +182,56 @@ function manga_reader_shortcode($atts) {
         $images = preg_split('/\s*(?:,|$)\s*/', $images);
     }
 
-    // Output HTML markup with added CSS styles
-    $output = '<style>
-        /* Respond */
-        #respond{
-            display: none;
-        }
+   // Output HTML markup with added CSS styles
+$output = '<style>
+    /* Respond */
+    #respond {
+        display: none;
+    }
 
-        /* Other styles for manga reader view */
-        .hentry .manga-reader .manga-reader-view{
-            text-align: center;
-        }
+    /* Other styles for manga reader view */
+    .hentry .manga-reader .manga-reader-view {
+        text-align: center;
+    }
 
-        /* Manga images container - Updated styles for list view */
-        .hentry .manga-reader .manga-images{
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            align-items: center;
-        }
+    /* Manga images container - Updated styles for list view */
+    .hentry .manga-reader .manga-images {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: center;
+    }
 
-        /* Change width percentage to change image size! */
-        .manga-reader .manga-images img{
-            width: 65%;
-            max-width: 100%;
-            height: auto;
-            margin-bottom: 10px;
-        }
+    /* Change width percentage to change image size! */
+    .manga-reader .manga-images img {
+        width: 90%;
+        max-width: 100%;
+        height: auto;
+        margin-bottom: 10px;
+    }
 
-        .hentry .manga-reader .manga-images img{
-            transform: none;
-        }
+    .hentry .manga-reader .manga-images img {
+        transform: none;
+    }
 
-        /* Byline */
-        .hentry .entry-meta .byline{
-            display: none;
-        }
+    /* Byline */
+    .hentry .entry-meta .byline {
+        display: none;
+    }
 
-        /* Left part */
-        .full-site .left-part{
+    /* Left part */
+    .full-site .left-part {
 
+    }
+
+    /* Mobile responsiveness */
+    @media only screen and (max-width: 600px) {
+        .manga-reader .manga-images img {
+            width: 100%;
         }
-    </style>';
+    }
+</style>';
+
 
     $output .= '<div class="manga-reader">';
     $output .= '<div class="manga-reader-view">';
