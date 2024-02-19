@@ -40,6 +40,15 @@ jQuery(document).ready(function($) {
           }
         },
         closeOnBgClick: false,
+        // Enable swipe functionality for mobile
+        swipe: {
+          onTouchMove: function(e) {
+            handleSwipeMove(e);
+          },
+          onTouchEnd: function() {
+            handleSwipeEnd();
+          }
+        }
       }, index);
 
       // Add close button in Magnific Popup
@@ -58,13 +67,21 @@ jQuery(document).ready(function($) {
     }
   };
 
-  mangaImages.click(function(e) {
-    e.preventDefault();
-    openMagnificPopup(currentIndex);
-  });
+  var handleSwipeMove = function(e) {
+    // Handle swipe move event if needed
+  };
 
-  $(document).keydown(function(e) {
-    if (e.keyCode === 39) { // Right Arrow
+  var handleSwipeEnd = function() {
+    var delta = touchEndX - touchStartX;
+
+    if (delta > 50) {
+      // Swipe right, go to the previous image
+      if (currentIndex > 0) {
+        currentIndex--;
+        openMagnificPopup(currentIndex);
+      }
+    } else if (delta < -50) {
+      // Swipe left, go to the next image
       if (currentIndex < totalPages - 1) {
         currentIndex++;
         openMagnificPopup(currentIndex);
@@ -72,12 +89,34 @@ jQuery(document).ready(function($) {
         // Reached the last image, close the gallery
         $.magnificPopup.close();
       }
-    } else if (e.keyCode === 37) { // Left Arrow
-      if (currentIndex > 0) {
-        currentIndex--;
-        openMagnificPopup(currentIndex);
-      }
     }
+
+    // Reset touch coordinates
+    touchStartX = null;
+    touchEndX = null;
+  };
+
+  // Touch event variables
+  var touchStartX = null;
+  var touchEndX = null;
+
+  mangaImages.click(function(e) {
+    e.preventDefault();
+    openMagnificPopup(currentIndex);
+  });
+
+  $(document).on('touchstart', '.mfp-img', function(e) {
+    touchStartX = e.originalEvent.touches[0].pageX;
+  });
+
+  $(document).on('touchmove', '.mfp-img', function(e) {
+    // Handle touch move event if needed
+    handleSwipeMove(e);
+  });
+
+  $(document).on('touchend', '.mfp-img', function(e) {
+    touchEndX = e.originalEvent.changedTouches[0].pageX;
+    handleSwipeEnd();
   });
 
   // Close button click event
