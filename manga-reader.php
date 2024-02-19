@@ -2,11 +2,162 @@
 /**
  * Plugin Name: Manga Reader
  * Description: A manga reader plugin.
- * Version: MR3
+ * Version: MR3 - hotfix
  * Author: Ha Sky
  * Author URI: https://hasky.rf.gd
- **/
+ */
 
+// Start a session
+session_start();
+
+// Add admin menu
+function manga_reader_admin_menu() {
+    add_menu_page(
+        'WP-MangaReader Settings',
+        'WP-MangaReader',
+        'manage_options',
+        'wp-manga-reader-settings',
+        'manga_reader_settings_page'
+    );
+}
+add_action('admin_menu', 'manga_reader_admin_menu');
+
+// Display settings page
+function manga_reader_settings_page() {
+    ?>
+    <div class="wrap">
+        <h1>WP-MangaReader Settings</h1>
+        <h2>How to add the - <a href="https://skyha.rf.gd/reader/" target="_blank" title="Reader Template DEMO">Reader Template PHP code</a></h2>
+        <p>To use the reader page template, download this plugin <button id="recommended-plugin-link" class="button" onclick="redirectRecommendedPlugin()">DOWNLOAD NOW</button></p>
+        <p>Follow these steps:</p>
+        <ol>
+            <li>Download the plugin and upload the ZIP file to WordPress using the Plugins settings.</li>
+            <li>After activating the plugin, go to the left side menu and select "XYZ PHP Code" -> PHPCode Snippet.</li>
+            <li>Create a new snippet and copy + paste this code here: <a href="https://raw.githubusercontent.com/sykhangdha/wp-mangareader-plugin/main/reader-example.php" target="_blank">https://raw.githubusercontent.com/sykhangdha/wp-mangareader-plugin/main/reader-example.php</a></li>
+            <li>A shortcode will be given; use that shortcode and paste it on any page or post.</li>
+        </ol>
+
+        <h2>Extensions - Quick Chapter Adder</h2>
+        <?php
+        // Output the form directly on the settings page
+        echo do_shortcode('[custom_category_post_generator]');
+        ?>
+        
+        <script>
+            function redirectRecommendedPlugin() {
+                window.location.href = 'https://wordpress.org/plugins/insert-php-code-snippet/';
+            }
+        </script>
+    </div>
+    <?php
+}
+
+// Define the shortcode for Quick Chapter Adder
+function custom_category_post_generator_shortcode($atts) {
+    // Extract shortcode attributes
+    extract(shortcode_atts(array(
+        'category' => '',
+    ), $atts));
+
+    // Initialize the number or retrieve it from the session
+    if (!isset($_SESSION['post_number'])) {
+        $_SESSION['post_number'] = 1;
+    }
+
+    // Initialize the category or retrieve it from the session
+    if (!isset($_SESSION['selected_category'])) {
+        $_SESSION['selected_category'] = '';
+    }
+
+    // Output the form
+    $output = '';
+
+    // Handle form submission
+    if (isset($_POST['generate_post'])) {
+        $selected_category_slug = sanitize_text_field($_POST['category']);
+        $user_entered_number = intval($_POST['number']);
+        $image_links = sanitize_textarea_field($_POST['image_links']);
+
+        if (!empty($selected_category_slug) && $user_entered_number > 0) {
+            // Get the selected category object by slug
+            $selected_category = get_term_by('slug', $selected_category_slug, 'category');
+
+            if ($selected_category && !is_wp_error($selected_category)) {
+                // Use the user-entered number for the current post
+                $post_number = $user_entered_number;
+
+                // Create a new post
+                $post_title = $selected_category->name . ' - ' . $post_number;
+                $post_content = '[manga_reader]'; // Add [manga_reader] shortcode to post content
+
+                // Create post data
+                $post_data = array(
+                    'post_title'    => $post_title,
+                    'post_content'  => $post_content,
+                    'post_status'   => 'publish',
+                    'post_category' => array($selected_category->term_id),
+                );
+
+                // Insert the post
+                $post_id = wp_insert_post($post_data);
+
+                // Save image links as a single block of text in the custom field
+                update_post_meta($post_id, 'image_links', $image_links);
+
+                $output .= '<p>Post created successfully: <a href="' . get_permalink($post_id) . '">' . $post_title . '</a></p>';
+
+                // Store the selected category in the session
+                $_SESSION['selected_category'] = $selected_category_slug;
+
+                // Increment the number for the next post
+                $_SESSION['post_number'] = $user_entered_number + 1;
+
+                // Refresh the page to start a new post
+                echo '<meta http-equiv="refresh" content="0">';
+            } else {
+                $output .= '<p>Invalid manga name selected.</p>';
+            }
+        } else {
+            $output .= '<p>Please select a category and enter a valid starting number.</p>';
+        }
+    } else {
+        // Preselect the category from the session
+        $selected_category_slug = $_SESSION['selected_category'];
+
+        // Output the form when the page initially loads
+        $output .= '
+            <form method="post">
+                <label for="category">Select Manga:</label>
+                <select name="category">
+                    <option value="">Select Manga</option>';
+
+        // Retrieve all categories with no posts
+        $categories = get_categories(array(
+            'hide_empty' => false,
+        ));
+        foreach ($categories as $cat) {
+            $selected = ($cat->slug === $selected_category_slug) ? 'selected' : '';
+            $output .= '<option value="' . $cat->slug . '" ' . $selected . '>' . $cat->name . '</option>';
+        }
+
+        $output .= '
+                </select>
+                <br>
+                <label for="number">Enter chapter number:</label>
+                <input type="text" name="number" value="' . $_SESSION['post_number'] . '"><br>
+                <label for="image_links">Image Links (one block of text):</label>
+                <textarea name="image_links" rows="5"></textarea><br>
+                <input type="submit" name="generate_post" value="Create Post">
+            </form>';
+    }
+
+    return $output;
+}
+
+// Register the shortcode
+add_shortcode('custom_category_post_generator', 'custom_category_post_generator_shortcode');
+
+// Define the shortcode for manga_reader
 function manga_reader_shortcode($atts) {
     // Extract shortcode attributes
     extract(shortcode_atts(array(
