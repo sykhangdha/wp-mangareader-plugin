@@ -1,6 +1,6 @@
 # wp-mangareader-plugin
 
-# Latest Release: [wp-mangareader-MR3.zip!](http://https://github.com/sykhangdha/wp-mangareader-plugin/releases/ "Download Now!") // 4.19.24 
+# Latest Release: [wp-mangareader-MR3.zip!](https://github.com/sykhangdha/wp-mangareader-plugin/releases/ "Download Now!") // 4.19.24 
   * Click link above to download
 
 a super simple manga reader that works with most wordpress themes using jQuery(js).
