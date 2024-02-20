@@ -1,7 +1,6 @@
 # wp-mangareader-plugin
 
-# Latest Release: Removed for now! Fixing issue with reader view // 4.19.24 
-  * The update was removed for now as there was another issue with paged/reader view. I am currently in the process of making the reader more mobile friendly and using lightbox gallery view for a better reading experience. The javascript code being included is from https://dimsemenov.com/plugins/magnific-popup/
+# Latest Release: [MR3 - Download + Changelog](http:/https://github.com/sykhangdha/wp-mangareader-plugin/releases/tag/MR3/ "MR3 - Download + Changelog") // 4.19.24 
 
 a super simple manga reader that works with most wordpress themes using jQuery(js).
 https://skyha.rf.gd/reader/
@@ -28,19 +27,16 @@ AFTER INPUTTING THE IMAGE LINKS PLEASE INSERT [manga_reader] shortcode into your
 Note: if you want an option to use upload images from a wordpress gallery you can modify the manga-reader.php and manga-reader.js files to do this. Since the site uses external hosts to grab image links this function is not included in this reader plugin. But you are free to modify this plugin however you want! 
 
 # Functions
-  * Select between Paged/List View
-      * The reader will remember the last selected option
-      * For list view: Clicking on the image will scroll down to the next one.
+  * Paged/List view modes
+      * List view is always on by default, clicking on an image will open up Paged view mode(reader view)
+      * MR3 Introduces the lightbox javascript code from [Magnific Popup - JS](https://dimsemenov.com/plugins/magnific-popup/ "Magnific Popup - JS")
       * For paged view: Use arrow keys OR click on images to navigate
-      * Next and Previous chapter using arrow keys!(will add an option when clicking on image as well, probably will add in the next few days)
-      * Note: This assumes you are using the Category as your taxonomy! You can update the code if you are using a custom taxonomy
+      * Instructions on how to use reader-template.php is provided in the new WP-MangaReader settings introduced in the MR3 release(4.19.24)
+
   * Works with MOST wordpress themes
       * You may need to add some .css changes to your theme to get it to work properly!
   * Lightweight
       * No unnecssary functions, just switching between views and navigation functions.
-  * What's being worked on still?
-      * ~~Currently being worked on: A custom field to insert multiple image links and it will automatically insert the shortcode and links into the correct format.~~ Added in V2
-      * ~~You can test this out by downloading the zip of this repo and activating the plugin. Use classic editor and go to screen options and in custom_fields add one called image_links (it should be an option but if not type it in and press enter). Now any image links provied in the field(one image link per line) it will display it into the reader when you use the shortcode [manga_reader]~~  Added in Maintenance Release 1
       
 
 Info about image link scrapper here: https://github.com/sykhangdha/wp-mangareader-plugin/tree/main/imagelinkscrapper
