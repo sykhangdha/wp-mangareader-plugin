@@ -2,9 +2,10 @@
 
 # Latest Release: [MR3 - Download + Changelog](http://github.com/sykhangdha/wp-mangareader-plugin/releases/tag/MR3/ "MR3 - Download + Changelog") // 4.19.24 
 - View the new reader demo [HERE](https://skyha.rf.gd/choujin-x-6/ "New Reader DEMO")
-	- Click on the first image to open up the lightbox reader mode
-	- Touch controls have been added where swiping left/right will go to prev/next image
-	- Hit 'ESC' to close the reader OR click on the close button on the top right
+	- [Changelog](https://skyha.rf.gd/project-releases/#tab-5791 "Changelog")
+	- [Installation Guide](https://skyha.rf.gd/project-releases/#tab-5792 "Installation Guide") <--**NEW**
+	- [Reader page setup Guide](https://skyha.rf.gd/project-releases/#tab-5793 "Reader page setup Guide")
+
 
 a super simple manga reader that works with most wordpress themes using jQuery(js).
 https://skyha.rf.gd/reader/
