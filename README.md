@@ -1,6 +1,6 @@
 # wp-mangareader-plugin
 
-# Latest Release: [MR3 - Download + Changelog](http://github.com/sykhangdha/wp-mangareader-plugin/releases/tag/MR3/ "MR3 - Download + Changelog") // 3.19.24 (wrong date woops)
+# Latest Release: [MR3 - Download + Changelog](http://github.com/sykhangdha/wp-mangareader-plugin/releases/tag/MR3/ "MR3 - Download + Changelog") // 3.19.24
 - View the new reader demo [HERE](https://skyha.rf.gd/choujin-x-6/ "New Reader DEMO")
 	- [Changelog](https://skyha.rf.gd/project-releases/#tab-5791 "Changelog")
 	- [Installation Guide](https://skyha.rf.gd/project-releases/#tab-5792 "Installation Guide") <--**NEW**
