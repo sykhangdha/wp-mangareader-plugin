@@ -4,6 +4,7 @@ jQuery(document).ready(function($) {
   var currentIndex = 0;
   var totalPages = mangaImages.length;
   var magnificPopupInstance = null;
+  var touchStartX = null;
 
   var scrollToNextImage = function() {
     if (currentIndex < totalPages - 1) {
@@ -41,18 +42,12 @@ jQuery(document).ready(function($) {
             $('.exit-button').show(); // Show exit button when popup is opened
             // Handle escape key separately
             $(document).on('keydown.magnificPopup', handleEscapeKey);
+            // Enable swipe functionality for mobile
+            $('.mfp-container').on('touchstart', handleSwipeStart);
+            $('.mfp-container').on('touchend', handleSwipeEnd);
           }
         },
-        closeOnBgClick: false,
-        // Enable swipe functionality for mobile
-        swipe: {
-          onTouchMove: function(e) {
-            handleSwipeMove(e);
-          },
-          onTouchEnd: function() {
-            handleSwipeEnd();
-          }
-        }
+        closeOnBgClick: false
       }, index);
     } else {
       // Close the gallery if trying to open beyond the last image
@@ -74,12 +69,32 @@ jQuery(document).ready(function($) {
     }
   };
 
-  var handleSwipeMove = function(e) {
-    // Handle swipe move event if needed
+  var handleSwipeStart = function(e) {
+    touchStartX = e.originalEvent.touches[0].pageX;
   };
 
-  var handleSwipeEnd = function() {
-    // Handle swipe end event if needed
+  var handleSwipeEnd = function(e) {
+    if (touchStartX !== null) {
+      var touchEndX = e.originalEvent.changedTouches[0].pageX;
+      var deltaX = touchEndX - touchStartX;
+      if (deltaX > 50) {
+        // Swipe right, go to the previous image
+        if (currentIndex > 0) {
+          currentIndex--;
+          openMagnificPopup(currentIndex);
+        }
+      } else if (deltaX < -50) {
+        // Swipe left, go to the next image
+        if (currentIndex < totalPages - 1) {
+          currentIndex++;
+          openMagnificPopup(currentIndex);
+        } else {
+          // Reached the last image, close the gallery
+          $.magnificPopup.close();
+        }
+      }
+      touchStartX = null;
+    }
   };
 
   // Function to open Magnific Popup image gallery
@@ -96,7 +111,6 @@ jQuery(document).ready(function($) {
 
   // Append button to the reader
   mangaReader.prepend(pagedViewButton);
-
 
   // Click event for mangaImages
   mangaImages.click(function(e) {
