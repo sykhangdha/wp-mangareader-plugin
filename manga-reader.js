@@ -30,6 +30,10 @@ jQuery(document).ready(function($) {
         callbacks: {
           change: function() {
             currentIndex = this.index;
+            // Check if the last image is reached
+            if (currentIndex === totalPages - 1) {
+              $.magnificPopup.close();
+            }
           },
           close: function() {
             scrollToTop();
@@ -49,9 +53,6 @@ jQuery(document).ready(function($) {
         },
         closeOnBgClick: false
       }, index);
-    } else {
-      // Close the gallery if trying to open beyond the last image
-      $.magnificPopup.close();
     }
   };
 
@@ -88,9 +89,6 @@ jQuery(document).ready(function($) {
         if (currentIndex < totalPages - 1) {
           currentIndex++;
           openMagnificPopup(currentIndex);
-        } else {
-          // Reached the last image, close the gallery
-          $.magnificPopup.close();
         }
       }
       touchStartX = null;
