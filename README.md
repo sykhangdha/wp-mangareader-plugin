@@ -1,6 +1,6 @@
 # wp-mangareader-plugin
 
-# Original Version: [MR2 - Download + Changelog](http://github.com/sykhangdha/wp-mangareader-plugin/releases/tag/maintenance/ "MR4 - Download + Changelog") // Original edition before magnific release
+# Original Version: [MR2 - Download + Changelog](http://github.com/sykhangdha/wp-mangareader-plugin/releases/tag/Maintenance/ "MR4 - Download + Changelog") // Original edition before magnific release
 
 # Magnific Release: [MR4 - Download + Changelog](http://github.com/sykhangdha/wp-mangareader-plugin/releases/tag/MR4/ "MR4 - Download + Changelog") // Uses lightbox gallery(better preloading)
 - View the new reader demo [HERE](https://skyha.rf.gd/choujin-x-6/ "New Reader DEMO")
