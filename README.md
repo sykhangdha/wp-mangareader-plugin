@@ -1,12 +1,12 @@
 # wp-mangareader-plugin
 
-# Latest Release: [MR3 - Download + Changelog](http://github.com/sykhangdha/wp-mangareader-plugin/releases/tag/MR3/ "MR3 - Download + Changelog") // 3.19.24
+# Original Version: [MR2 - Download + Changelog](http://github.com/sykhangdha/wp-mangareader-plugin/releases/tag/maintenance/ "MR4 - Download + Changelog") // Original edition before magnific release
+
+# Magnific Release: [MR4 - Download + Changelog](http://github.com/sykhangdha/wp-mangareader-plugin/releases/tag/MR4/ "MR4 - Download + Changelog") // Uses lightbox gallery(better preloading)
 - View the new reader demo [HERE](https://skyha.rf.gd/choujin-x-6/ "New Reader DEMO")
 	- [Changelog](https://skyha.rf.gd/project-releases/#tab-5791 "Changelog")
 	- [Installation Guide](https://skyha.rf.gd/project-releases/#tab-5792 "Installation Guide") <--**NEW**
 	- [Reader page setup Guide](https://skyha.rf.gd/project-releases/#tab-5793 "Reader page setup Guide")
-- Upcoming Changes
-  	-Adding back List/Paged view functions
 
 a super simple manga reader that works with most wordpress themes using jQuery(js).
 https://skyha.rf.gd/reader/
