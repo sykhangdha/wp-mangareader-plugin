@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Manga Reader
  * Description: A manga reader plugin.
- * Version: MR3 - hotfix
+ * Version: MR4 - hotfix
  * Author: Ha Sky
  * Author URI: https://hasky.rf.gd
  */
@@ -238,7 +238,7 @@ function manga_reader_shortcode($atts) {
 // Load scripts
 function manga_reader_scripts() {
     wp_enqueue_script('jquery');
-    wp_enqueue_script('magnific-popup', 'https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/jquery.magnific-popup.min.js', array('jquery'), '1.1.0', true);
+    wp_enqueue_script('magnific-popup', 'https://raw.githubusercontent.com/sykhangdha/wp-mangareader-plugin/main/magnific-popup.js', array('jquery'), '1.1.0', true);
     wp_enqueue_script('manga-reader-script', plugins_url('manga-reader.js', __FILE__), array('jquery', 'magnific-popup'), '3.2', true);
 
     // Preload images before initializing Magnific Popup
