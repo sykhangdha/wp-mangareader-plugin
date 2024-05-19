@@ -86,9 +86,10 @@ function custom_category_post_generator_shortcode($atts) {
                 // Use the user-entered number for the current post
                 $post_number = $user_entered_number;
 
-                // Create a new post
-                $post_title = $selected_category->name . ' - ' . $post_number;
-                $post_content = '[manga_reader]'; // Add [manga_reader] shortcode to post content
+               // Create a new post
+				$post_title = 'Chapter ' . $post_number;
+				$post_content = '[manga_reader]'; // Add [manga_reader] shortcode to post content
+
 
                 // Create post data
                 $post_data = array(
@@ -172,17 +173,17 @@ function manga_reader_shortcode($atts) {
     $images = explode("\n", $image_links);
 
     $output = '<div class="manga-reader">';
-    $output .= '<div class="manga-images">';
-    foreach ($images as $image) {
-        $image = esc_url(trim($image));
-        $output .= '<a href="' . $image . '" class="manga-image">';
-        $output .= '<img class="lazyload" src="' . $image . '" alt="Manga Image">';
-        $output .= '</a>';
-    }
-    $output .= '</div>';
-    $output .= '</div>';
+$output .= '<div class="manga-images">';
+foreach ($images as $image) {
+    $image = esc_url(trim($image));
+    $output .= '<a href="' . $image . '" class="manga-image">';
+    $output .= '<img class="lazyload" src="' . $image . '" alt="Manga Image">';
+    $output .= '</a>';
+}
+$output .= '</div>';
+$output .= '</div>';
 
-    return $output;
+return $output;
 }
 add_shortcode('manga_reader', 'manga_reader_shortcode');
 
@@ -310,6 +311,28 @@ function custom_rewrite_rules() {
     );
 }
 add_action('init', 'custom_rewrite_rules');
+
+
+// Modify the title display of Chapters in admin
+function custom_chapters_admin_title($title, $post_id) {
+    // Check if it's a chapter post type
+    if (get_post_type($post_id) === 'chapter') {
+        // Get the manga term associated with this chapter
+        $manga_terms = get_the_terms($post_id, 'manga');
+        if (!empty($manga_terms)) {
+            // Get the first manga name
+            $manga_name = $manga_terms[0]->name;
+            // Get the chapter number
+            $chapter_number = str_replace('Chapter ', '', $title);
+            // Replace the title with [manga name] chapter number
+            $title = $manga_name . ' ' . $chapter_number;
+        }
+    }
+    return $title;
+}
+add_filter('the_title', 'custom_chapters_admin_title', 10, 2);
+
+
 
 // Modify post type permalink structure
 function custom_chapter_post_link($post_link, $post) {
