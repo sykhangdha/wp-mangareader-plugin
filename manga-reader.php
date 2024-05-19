@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Manga Reader
  * Description: A manga reader plugin.
- * Version: MR4 - hotfix
+ * Version: MR5 - Features Update
  * Author: Ha Sky
  * Author URI: https://hasky.rf.gd
  */
@@ -80,7 +80,7 @@ function custom_category_post_generator_shortcode($atts) {
 
         if (!empty($selected_category_slug) && $user_entered_number > 0) {
             // Get the selected category object by slug
-            $selected_category = get_term_by('slug', $selected_category_slug, 'category');
+            $selected_category = get_term_by('slug', $selected_category_slug, 'manga');
 
             if ($selected_category && !is_wp_error($selected_category)) {
                 // Use the user-entered number for the current post
@@ -95,7 +95,10 @@ function custom_category_post_generator_shortcode($atts) {
                     'post_title'    => $post_title,
                     'post_content'  => $post_content,
                     'post_status'   => 'publish',
-                    'post_category' => array($selected_category->term_id),
+                    'post_type'     => 'chapter', // Changed to 'chapter' post type
+                    'tax_input'     => array(
+                        'manga' => array($selected_category->term_id),
+                    ),
                 );
 
                 // Insert the post
@@ -131,13 +134,14 @@ function custom_category_post_generator_shortcode($atts) {
                 <select name="category">
                     <option value="">Select Manga</option>';
 
-        // Retrieve all categories with no posts
-        $categories = get_categories(array(
+        // Retrieve all manga taxonomies
+        $mangas = get_terms(array(
+            'taxonomy' => 'manga',
             'hide_empty' => false,
         ));
-        foreach ($categories as $cat) {
-            $selected = ($cat->slug === $selected_category_slug) ? 'selected' : '';
-            $output .= '<option value="' . $cat->slug . '" ' . $selected . '>' . $cat->name . '</option>';
+        foreach ($mangas as $manga) {
+            $selected = ($manga->slug === $selected_category_slug) ? 'selected' : '';
+            $output .= '<option value="' . $manga->slug . '" ' . $selected . '>' . $manga->name . '</option>';
         }
 
         $output .= '
@@ -145,88 +149,34 @@ function custom_category_post_generator_shortcode($atts) {
                 <br>
                 <label for="number">Enter chapter number:</label>
                 <input type="text" name="number" value="' . $_SESSION['post_number'] . '"><br>
-                <label for="image_links">Image Links (one block of text):</label>
-                <textarea name="image_links" rows="5"></textarea><br>
-                <input type="submit" name="generate_post" value="Create Post">
+                <label for="image_links">Image Links:</label>
+                <textarea name="image_links" rows="5" cols="40"></textarea><br>
+                <input type="submit" name="generate_post" value="Generate Chapter">
             </form>';
     }
 
     return $output;
 }
-
-// Register the shortcode
 add_shortcode('custom_category_post_generator', 'custom_category_post_generator_shortcode');
 
-// Define the shortcode for manga_reader
+// Shortcode to display manga images
 function manga_reader_shortcode($atts) {
-    // Extract shortcode attributes
-    extract(shortcode_atts(array(
-        'images' => ''
-    ), $atts));
+    $atts = shortcode_atts(array(), $atts, 'manga_reader');
+    $post_id = get_the_ID();
+    $image_links = get_post_meta($post_id, 'image_links', true);
 
-    global $post;
-
-    // Check if images were provided as shortcode attribute, if not, get image links from custom field
-    if (empty($images)) {
-        $image_links = get_post_meta(get_the_ID(), 'image_links', true);
-
-        // Check if there is any text in the custom field 'image_links'
-        if (!empty($image_links)) {
-            // Convert image links to array
-            $images = preg_split('/\r\n|[\r\n]/', $image_links);
-            $images = array_map('trim', $images);
-            $images = array_filter($images);
-        }
-    } else {
-        // Convert image links to array
-        $images = preg_split('/\s*(?:,|$)\s*/', $images);
+    if (empty($image_links)) {
+        return '<p>No images found for this chapter.</p>';
     }
 
-    // Output HTML markup with added CSS styles and Magnific Popup attributes
-    $output = '<style>
-        /* Other styles for manga reader view */
-        .hentry .manga-reader .manga-images {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            align-items: center;
-        }
+    $images = explode("\n", $image_links);
 
-        /* Change width percentage to change image size! */
-        .manga-reader .manga-images a {
-            width: 90%;
-            max-width: 100%;
-            height: auto;
-            margin-bottom: 10px;
-        }
-
-        .hentry .manga-reader .manga-images img {
-            transform: none;
-        }
-
-        /* Byline */
-        .hentry .entry-meta .byline {
-            display: none;
-        }
-
-        /* Left part */
-        .full-site .left-part {
-
-        }
-
-        /* Mobile responsiveness */
-        @media only screen and (max-width: 600px) {
-            .manga-reader .manga-images a {
-                width: 100%;
-            }
-        }
-    </style>';
-
-    $output .= '<div class="manga-reader">';
+    $output = '<div class="manga-reader">';
     $output .= '<div class="manga-images">';
-    foreach ($images as $key => $image) {
-        $output .= '<a class="img-popup" href="' . $image . '" title="'.basename($image).'" data-post-id="' . get_the_ID() . '" data-post-category="' . get_the_category()[0]->slug . '" data-image-index="' . $key . '">';
-        $output .= '<img class="img-loading" src="' . $image . '" alt="'.basename($image).'" />';
+    foreach ($images as $image) {
+        $image = esc_url(trim($image));
+        $output .= '<a href="' . $image . '" class="manga-image">';
+        $output .= '<img class="lazyload" src="' . $image . '" alt="Manga Image">';
         $output .= '</a>';
     }
     $output .= '</div>';
@@ -234,93 +184,142 @@ function manga_reader_shortcode($atts) {
 
     return $output;
 }
+add_shortcode('manga_reader', 'manga_reader_shortcode');
 
-// Load scripts
+// Load required scripts and styles
 function manga_reader_scripts() {
-    wp_enqueue_script('jquery');
     wp_enqueue_script('magnific-popup', 'https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/jquery.magnific-popup.min.js', array('jquery'), '1.1.0', true);
-    wp_enqueue_script('manga-reader-script', plugins_url('manga-reader.js', __FILE__), array('jquery', 'magnific-popup'), '5.0', true);
-
-    // Preload images before initializing Magnific Popup
-    $image_links = get_post_meta(get_the_ID(), 'image_links', true);
-
-    if (!empty($image_links)) {
-        $images = preg_split('/\r\n|[\r\n]/', $image_links);
-        $images = array_map('trim', $images);
-        $images = array_filter($images);
-
-        echo '<script>';
-        foreach ($images as $image) {
-            echo 'var preloadImage = new Image(); preloadImage.src = "' . $image . '";';
-        }
-        echo '</script>';
-    }
-
-    // Pass loading image URL to JavaScript file
-    wp_localize_script('manga-reader-script', 'manga_data', array(
-        'loading_image' => plugins_url('/images/loading.gif', __FILE__)
-    ));
-
-    // Add Magnific Popup styles
-    wp_enqueue_style('magnific-popup', 'https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/magnific-popup.min.css');
+    wp_enqueue_style('magnific-popup', 'https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/magnific-popup.min.css', array(), '1.1.0');
+    wp_enqueue_style('manga-reader', plugin_dir_url(__FILE__) . 'css/manga-reader.css', array(), '1.0');
+    wp_enqueue_script('manga-reader', plugin_dir_url(__FILE__) . 'js/manga-reader.js', array('jquery', 'magnific-popup'), '1.0', true);
 }
 add_action('wp_enqueue_scripts', 'manga_reader_scripts');
 
-// Register shortcode
-function manga_reader_register_shortcode() {
-    add_shortcode('manga_reader', 'manga_reader_shortcode');
-}
-add_action('init', 'manga_reader_register_shortcode');
-
-// Add custom rewrite rule
-function manga_reader_rewrite_rules($rules) {
-    $new_rules = array(
-        'manga/([^/]+)/?$' => 'index.php?manga=$matches[1]'
+// Register custom post type for chapters
+function create_chapters_post_type() {
+    $labels = array(
+        'name' => _x('Chapters', 'post type general name'),
+        'singular_name' => _x('Chapter', 'post type singular name'),
+        'menu_name' => _x('Chapters', 'admin menu'),
+        'name_admin_bar' => _x('Chapter', 'add new on admin bar'),
+        'add_new' => _x('Add New', 'chapter'),
+        'add_new_item' => __('Add New Chapter'),
+        'new_item' => __('New Chapter'),
+        'edit_item' => __('Edit Chapter'),
+        'view_item' => __('View Chapter'),
+        'all_items' => __('All Chapters'),
+        'search_items' => __('Search Chapters'),
+        'parent_item_colon' => __('Parent Chapters:'),
+        'not_found' => __('No chapters found.'),
+        'not_found_in_trash' => __('No chapters found in Trash.'),
     );
-    return $new_rules + $rules;
+
+    $args = array(
+        'labels' => $labels,
+        'public' => true,
+        'publicly_queryable' => true,
+        'show_ui' => true,
+        'show_in_menu' => true,
+        'query_var' => true,
+        'rewrite' => array('slug' => 'chapter', 'with_front' => false),
+        'capability_type' => 'post',
+        'has_archive' => true,
+        'hierarchical' => false,
+        'menu_position' => null,
+        'supports' => array('title', 'editor', 'author', 'thumbnail', 'excerpt', 'comments'),
+    );
+
+    register_post_type('chapter', $args);
 }
-add_filter('rewrite_rules_array', 'manga_reader_rewrite_rules');
+add_action('init', 'create_chapters_post_type');
 
-// Handle custom query variables
-function manga_reader_query_vars($vars) {
-    $vars[] = 'manga';
-    return $vars;
+// Register custom taxonomy for manga
+function create_manga_taxonomy() {
+    $labels = array(
+        'name' => _x('Manga', 'taxonomy general name'),
+        'singular_name' => _x('Manga', 'taxonomy singular name'),
+        'search_items' => __('Search Manga'),
+        'all_items' => __('All Manga'),
+        'parent_item' => __('Parent Manga'),
+        'parent_item_colon' => __('Parent Manga:'),
+        'edit_item' => __('Edit Manga'),
+        'update_item' => __('Update Manga'),
+        'add_new_item' => __('Add New Manga'),
+        'new_item_name' => __('New Manga Name'),
+        'menu_name' => __('Manga'),
+    );
+
+    $args = array(
+        'hierarchical' => true,
+        'labels' => $labels,
+        'show_ui' => true,
+        'show_admin_column' => true,
+        'query_var' => true,
+        'rewrite' => array('slug' => 'manga'),
+    );
+
+    register_taxonomy('manga', array('chapter'), $args);
 }
-add_filter('query_vars', 'manga_reader_query_vars');
+add_action('init', 'create_manga_taxonomy', 0);
 
-// Handle custom template
-function manga_reader_template($template) {
-    global $wp_query;
-    if (isset($wp_query->query_vars['manga'])) {
-        // Get the current post ID
-        $post_id = $wp_query->queried_object_id;
+// Add custom meta box for manga selection
+function add_manga_meta_box() {
+    add_meta_box(
+        'manga_meta_box',
+        __('Manga', 'text_domain'),
+        'render_manga_meta_box',
+        'chapter',
+        'side',
+        'default'
+    );
+}
+add_action('add_meta_boxes', 'add_manga_meta_box');
 
-        // Get the current category ID
-        $category = get_the_category($post_id);
-        $category_id = !empty($category) ? $category[0]->cat_ID : '';
+function render_manga_meta_box($post) {
+    // Retrieve current manga selection
+    $manga_id = get_post_meta($post->ID, 'manga_id', true);
+    $mangas = get_terms(array(
+        'taxonomy' => 'manga',
+        'hide_empty' => false,
+    ));
+    ?>
+    <select name="manga_id" id="manga_id">
+        <option value=""><?php _e('Select Manga', 'text_domain'); ?></option>
+        <?php foreach ($mangas as $manga) : ?>
+            <option value="<?php echo esc_attr($manga->term_id); ?>" <?php selected($manga_id, $manga->term_id); ?>>
+                <?php echo esc_html($manga->name); ?>
+            </option>
+        <?php endforeach; ?>
+    </select>
+    <?php
+}
 
-        // Load different templates based on view and last image clicked
-        return plugin_dir_path(__FILE__) . 'manga-reader.php';
+function save_manga_meta_box($post_id) {
+    if (isset($_POST['manga_id'])) {
+        update_post_meta($post_id, 'manga_id', sanitize_text_field($_POST['manga_id']));
     }
-    return $template;
 }
-add_filter('template_include', 'manga_reader_template');
+add_action('save_post', 'save_manga_meta_box');
 
-// Add shortcode on post publish or update
-function manga_reader_add_shortcode_on_publish($post_id) {
-    $post = get_post($post_id);
+// Add custom rewrite rules
+function custom_rewrite_rules() {
+    add_rewrite_rule(
+        '^([^/]+)/([^/]+)/?',
+        'index.php?chapter=$matches[2]&manga=$matches[1]',
+        'top'
+    );
+}
+add_action('init', 'custom_rewrite_rules');
 
-    if ($post->post_type === 'post' && ($post->post_status === 'publish' || $post->post_status === 'draft')) {
-        $image_links = get_post_meta($post_id, 'image_links', true);
-
-        // Check if there is any text in the custom field 'image_links'
-        if (!empty($image_links)) {
-            $content = $post->post_content;
-            if (strpos($content, '[manga_reader]') === false) {
-                $updated_content = $content . '[manga_reader]';
-                wp_update_post(array('ID' => $post_id, 'post_content' => $updated_content));
-            }
+// Modify post type permalink structure
+function custom_chapter_post_link($post_link, $post) {
+    if (is_object($post) && $post->post_type == 'chapter') {
+        $terms = wp_get_object_terms($post->ID, 'manga');
+        if ($terms) {
+            return str_replace('chapter/', $terms[0]->slug . '/', $post_link);
         }
     }
+    return $post_link;
 }
-add_action('save_post', 'manga_reader_add_shortcode_on_publish', 10, 2);
+add_filter('post_type_link', 'custom_chapter_post_link', 10, 2);
+?>
