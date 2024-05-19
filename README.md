@@ -1,7 +1,7 @@
 # wp-mangareader-plugin
 
 # Upcoming Changes
-- Better way to add manga + chapters
+- Better way to add manga + chapters(currently being worked on as of 5.19.24)
 	- Add custom taxonomy for Mangas + Chapters to keep it separate from the default category taxonomy for wordpress
 	- Better way to add chapters + image links
         - Manga list + recent chapters update page
