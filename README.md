@@ -2,6 +2,7 @@
 
 # Upcoming Changes
 - rewrite of mangastarter theme with implementaiton of wp-manga-reader in progress(no ETA). Updates will move back to MangaStarter(Reworked). The Original/Magnific version of the wp-mangareader will be the final updates for the php script. Modify the code however you wish as I do not plan to continue working on the reader for awhile. The reader itself works perfectly fine[Use the magnific release for best results]
+- Preview: [SkyManga](http://skymanga.42web.io/)
 
 
 # Original Version: [MR2 - Download + Changelog](http://github.com/sykhangdha/wp-mangareader-plugin/releases/tag/Maintenance/ "MR4 - Download + Changelog") // Original edition before magnific release
