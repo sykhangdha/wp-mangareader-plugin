@@ -1,10 +1,7 @@
 # wp-mangareader-plugin
 
 # Upcoming Changes
-- Better way to add manga + chapters(currently being worked on as of 5.19.24)
-	- Add custom taxonomy for Mangas + Chapters to keep it separate from the default category taxonomy for wordpress[completed]
-	- Better way to add chapters + image links[added]
-        - Manga list + recent chapters update page[working on...]
+- rewrite of mangastarter theme with implementaiton of wp-manga-reader in progress(no ETA). Updates will move back to MangaStarter(Reworked). The Original/Magnific version of the wp-mangareader will be the final updates for the php script. Modify the code however you wish as I do not plan to continue working on the reader for awhile. The reader itself works perfectly fine[Use the magnific release for best results]
 
 
 # Original Version: [MR2 - Download + Changelog](http://github.com/sykhangdha/wp-mangareader-plugin/releases/tag/Maintenance/ "MR4 - Download + Changelog") // Original edition before magnific release
