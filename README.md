@@ -2,9 +2,9 @@
 
 # Upcoming Changes
 - Better way to add manga + chapters(currently being worked on as of 5.19.24)
-	- Add custom taxonomy for Mangas + Chapters to keep it separate from the default category taxonomy for wordpress
-	- Better way to add chapters + image links
-        - Manga list + recent chapters update page
+	- Add custom taxonomy for Mangas + Chapters to keep it separate from the default category taxonomy for wordpress[completed]
+	- Better way to add chapters + image links[added]
+        - Manga list + recent chapters update page[working on...]
 
 
 # Original Version: [MR2 - Download + Changelog](http://github.com/sykhangdha/wp-mangareader-plugin/releases/tag/Maintenance/ "MR4 - Download + Changelog") // Original edition before magnific release
