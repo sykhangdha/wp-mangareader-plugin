@@ -1,10 +1,9 @@
 # wp-mangareader-plugin
 
-# Upcoming Changes
-- rewrite of mangastarter theme with implementaiton of wp-manga-reader in progress(no ETA). Updates will move back to MangaStarter(Reworked). The Original/Magnific version of the wp-mangareader will be the final updates for the php script. Modify the code however you wish as I do not plan to continue working on the reader for awhile. The reader itself works perfectly fine[Use the magnific release for best results]
-- Preview: [SkyManga](http://skymanga.42web.io/)
-- Download(Still in beta and no guide yet): [MangaStarter-Revival Wordpress Theme](https://github.com/sykhangdha/mangareader-wp/releases/tag/Revival1)
+# PLEASE READ
 
+Development has moved over to mangareader-wp. The first release of the new MangaStarter wordpress theme has been added and info/install guide can be found [HERE
+](https://github.com/sykhangdha/mangareader-wp/). Below you can download the last versions of the wp-mangareader-plugin. Magnific Edition is the most recent release!
 
 # Original Version: [MR2 - Download + Changelog](http://github.com/sykhangdha/wp-mangareader-plugin/releases/tag/Maintenance/ "MR4 - Download + Changelog") // Original edition before magnific release
 
