@@ -6,6 +6,9 @@ jQuery(document).ready(function($) {
   var magnificPopupInstance = null;
   var touchStartX = null;
 
+  // Remove title attributes from all image links to prevent showing link names on hover
+  mangaImages.removeAttr('title');
+
   var scrollToNextImage = function() {
     if (currentIndex < totalPages - 1) {
       currentIndex++;
