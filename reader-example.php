@@ -1,11 +1,11 @@
 <?php
 /*
-Template Name: Reader Page Example
+Template Name: Reader Page Example - Bootstrap 4 addition
 */
 ?>
 
 <style>
-    /* Style for the A-Z listing */
+    /* A-Z Listing */
     #az-list {
         margin-top: 20px;
         text-align: center;
@@ -17,91 +17,80 @@ Template Name: Reader Page Example
         color: blue;
     }
 
-    /* Style for the grid container */
+    /* Style for the grid container using Bootstrap */
     .grid-container {
         display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); /* Responsive 3-column layout */
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); /* Responsive grid */
         gap: 20px;
-        justify-content: center;
         padding: 20px;
-        max-width: 1200px; /* Set a maximum width for the grid */
-        margin: 0 auto; /* Center the grid horizontally */
     }
 
-    /* Style for each grid item */
     .grid-item {
-        border: 1px solid #ccc;
+        border: 1px solid #dee2e6; /* Bootstrap border color */
         padding: 10px;
         text-align: center;
+        border-radius: 0.25rem;
+        background-color: #f8f9fa;
     }
 
-    /* Style for the post title */
     .post-title {
-        font-size: 18px;
-        font-weight: bold;
-        cursor: pointer; /* Add cursor pointer for clickable titles */
+        font-size: 1.125rem; /* Bootstrap font size */
+        font-weight: 700;
+        cursor: pointer;
+        color: #007bff;
+        text-decoration: none;
     }
 
-    /* Style for category headers */
+    .post-title:hover {
+        text-decoration: underline;
+    }
+
     .category-header {
-        font-size: 20px;
+        font-size: 1.25rem;
         font-weight: bold;
-        margin-bottom: 10px;
+        margin-bottom: 1rem;
+        color: #343a40;
     }
 
-    /* Style for the post date */
     .category-post-date {
-        font-size: 14px;
-        font-weight: normal;
-        margin-top: 5px;
+        font-size: 0.875rem;
+        margin-top: 0.5rem;
     }
 
-    /* Style for the "More Chapters" button */
-    .more-chapters {
-        text-align: center;
-        margin-top: 10px;
-    }
-
-    /* Style for the rounded light gray box */
     .info-box {
-        background-color: #f0f0f0;
-        border-radius: 10px;
-        padding: 10px;
+        background-color: #e9ecef;
+        padding: 1rem;
+        border-radius: 0.375rem;
+        margin-bottom: 2rem;
         text-align: center;
-        margin-bottom: 20px;
     }
 
-    /* Style for the search container */
     #search-container {
-        text-align: center;
         margin-bottom: 20px;
     }
 
-    /* Style for the search input */
     #category-search {
-        padding: 5px;
+        padding: 0.5rem;
         width: 100%;
         max-width: 300px;
+        border: 1px solid #ced4da;
+        border-radius: 0.25rem;
     }
 
-    /* Style for the clickable text container */
-    .sort-links-container {
-        text-align: center;
-        margin-top: 10px;
-    }
-
-    /* Style for the clickable text */
     .sort-links {
         cursor: pointer;
+        margin: 0 10px;
+        color: #007bff;
         text-decoration: underline;
-        margin: 0 10px; /* Adjust the margin as needed */
+    }
+
+    .sort-links:hover {
+        text-decoration: none;
     }
 </style>
 
 <script>
 document.addEventListener('DOMContentLoaded', function () {
-    var defaultCategoryOrder;
-
     function toggleRecentPosts(categoryId) {
         var postsContainer = document.getElementById('category-posts-' + categoryId);
         postsContainer.style.display = (postsContainer.style.display === 'none') ? 'block' : 'none';
@@ -115,13 +104,11 @@ document.addEventListener('DOMContentLoaded', function () {
             var categoryTitles = categoryHeader.querySelectorAll('.post-title');
             var categoryContainer = categoryHeader.parentElement;
 
-            // Check if any category name within this category matches the search term
             var showCategory = Array.from(categoryTitles).some(function (categoryTitle) {
                 var categoryName = categoryTitle.textContent.trim().toUpperCase();
                 return categoryName.includes(searchInput);
             });
 
-            // Show or hide the entire category based on the search result
             categoryContainer.style.display = showCategory ? 'block' : 'none';
         });
     }
@@ -179,16 +166,13 @@ document.addEventListener('DOMContentLoaded', function () {
         filterCategories();
     });
 });
-
-
-
 </script>
 
-<div id="search-container">
+<div id="search-container" class="text-center">
     <input type="text" id="category-search" placeholder="Type to search for manga..." onkeyup="filterCategories()">
 </div>
 
-<div class="sort-links-container">
+<div class="sort-links-container text-center">
     <span class="sort-links sort-links-az">Sort A-Z</span>
     <span class="sort-links sort-links-latest">Sort by latest update</span>
 </div>
@@ -196,11 +180,10 @@ document.addEventListener('DOMContentLoaded', function () {
 <div id="az-list">
     <?php
     $categories = get_terms('category');
-
     $category_by_letter = array();
 
     foreach ($categories as $category) {
-        if (in_array($category->term_id, array(1))) {
+        if (in_array($category->term_id, array(1, 7))) {
             continue;
         }
 
@@ -246,9 +229,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
                     echo '<div class="category-header">';
                     echo '<span class="post-title" data-category-id="' . $category->term_id . '">' . $category->name . '</span>';
-
                     $recent_post_date = get_the_modified_date('', $query->posts[0]);
-
                     echo '<div class="category-post-date">Last Updated: ' . $recent_post_date . '</div>';
                     echo '</div>';
 
