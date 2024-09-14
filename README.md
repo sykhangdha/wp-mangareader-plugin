@@ -1,5 +1,7 @@
 # wp-mangareader-plugin
 
+The next maintenance release is coming soon. Preview the new reader [HERE](https://skyha.rf.gd/jujutsu-kaisen-268/ "HERE")
+
 # PLEASE READ
 
 Development has moved over to mangareader-wp. The first release of the new MangaStarter wordpress theme has been added and info/install guide can be found [HERE
