@@ -4,11 +4,8 @@ The final release of the wp-mangareader-plugin: [DOWNLOAD NOW](https://github.co
 
 # PLEASE READ
 
-Development has moved over to mangareader-wp. The first release of the new MangaStarter wordpress theme has been added and info/install guide can be found [HERE
-](https://github.com/sykhangdha/mangareader-wp/). Below you can download the last versions of the wp-mangareader-plugin. Magnific Edition is the most recent release!
+Users that want to use an alternative method(grab manga images and chapters from a folder) can use my new MangaViewer plugin [Check it out now!](https://github.com/sykhangdha/MangaViewer)
 
-a super simple manga reader that works with most wordpress themes using jQuery(js).
-https://skyha.rf.gd/reader/
 
 * The page linked uses this php code to display the manga list. You can add the php code to a wordpress page using the WP editor or the plugin called "Insert PHP Code Snippet". [Manga List PHP code](https://github.com/sykhangdha/wp-mangareader-plugin/blob/main/reader-example.php)
 * Note: If for some reason the changes are not working just clear your cache for your wordpress website to update/refresh the manga-reader.js file!
